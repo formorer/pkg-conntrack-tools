@@ -1,0 +1,10 @@
+[Unit]
+Description=Conntrack daemon for HA clusters
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/conntrackd -C /etc/conntrackd/conntrackd.conf
+
+[Install]
+WantedBy=multi-user.target

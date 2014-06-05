@@ -6,6 +6,7 @@ Homepage: http://conntrack-tools.netfilter.org/
 Build-Depends: autotools-dev,
                bison,
                debhelper (>= 9),
+               dh-systemd (>= 1.5),
                flex,
                libmnl-dev (>= 1.0.1),
                libnetfilter-conntrack-dev (>= 1.0.1),
