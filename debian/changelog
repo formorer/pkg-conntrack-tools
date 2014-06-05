@@ -1,3 +1,15 @@
+conntrack (1:1.4.2-1) UNRELEASED; urgency=medium
+
+  [ Alexander Wirt ]
+  * [095df09] Move to 3.0 (quilt) for bz2 support
+  * [6b61aef] Imported Upstream version 1.4.1
+  * [6d981a0] Update build-deps
+
+  [ Arturo Borrero Gonzalez ]
+  * [b6c0adb] Imported Upstream version 1.4.2
+
+ -- Alexander Wirt <formorer@debian.org>  Thu, 05 Jun 2014 10:50:49 +0200
+
 conntrack (1:1.2.1-1) unstable; urgency=low
 
   * [ed902b3] Initial upstream branch.
