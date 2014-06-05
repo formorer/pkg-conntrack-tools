@@ -7,8 +7,12 @@ conntrack (1:1.4.2-1) UNRELEASED; urgency=medium
 
   [ Arturo Borrero Gonzalez ]
   * [b6c0adb] Imported Upstream version 1.4.2 (Closes: #684868)
+  * [09b7a83] d/rules: do a verbose build
+  * [ffd56e1] d/control: add autotools-dev as build-dep
+  * [e3b38d3] d/control: bump standars version  to 3.9.5
+  * [ac874e2] d/: add initial support for systemd
 
- -- Alexander Wirt <formorer@debian.org>  Thu, 05 Jun 2014 10:50:49 +0200
+ -- Alexander Wirt <formorer@debian.org>  Thu, 05 Jun 2014 12:21:26 +0200
 
 conntrack (1:1.2.1-1) unstable; urgency=low
 
