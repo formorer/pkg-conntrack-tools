@@ -6,7 +6,7 @@ conntrack (1:1.4.2-1) UNRELEASED; urgency=medium
   * [6d981a0] Update build-deps
 
   [ Arturo Borrero Gonzalez ]
-  * [b6c0adb] Imported Upstream version 1.4.2
+  * [b6c0adb] Imported Upstream version 1.4.2 (Closes: #684868)
 
  -- Alexander Wirt <formorer@debian.org>  Thu, 05 Jun 2014 10:50:49 +0200
 
