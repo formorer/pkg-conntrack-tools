@@ -18,6 +18,7 @@ Build-Depends: autotools-dev,
 Standards-Version: 3.9.6
 Vcs-Git: https://github.com/formorer/pkg-conntrack.git
 Vcs-Browser: https://github.com/formorer/pkg-conntrack.git
+XS-Testsuite: autopkgtest
 
 Package: conntrack
 Architecture: linux-any

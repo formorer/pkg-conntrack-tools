@@ -1,0 +1,7 @@
+Test-Command: conntrackd -h
+Depends: @
+Restrictions: needs-root
+
+Test-Command: conntrack -h
+Depends: @
+Restrictions: needs-root
