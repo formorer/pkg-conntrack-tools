@@ -53,9 +53,9 @@ host_triplet = @host@
 DIST_COMMON = $(am__configure_deps) $(srcdir)/Make_global.am \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/configure AUTHORS COPYING INSTALL TODO \
-	build-aux/config.guess build-aux/config.sub build-aux/depcomp \
-	build-aux/install-sh build-aux/ltmain.sh build-aux/missing \
-	build-aux/ylwrap
+	build-aux/ar-lib build-aux/config.guess build-aux/config.sub \
+	build-aux/depcomp build-aux/install-sh build-aux/ltmain.sh \
+	build-aux/missing build-aux/ylwrap
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -876,7 +876,8 @@ uninstall-man: uninstall-man8
 
 
 dist-hook:
-	rm -rf `find $(distdir)/doc -name .svn`
+	rm -rf `find $(distdir)/doc -name *.orig`
+	rm -rf `find $(distdir)/doc -name *.rej`
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

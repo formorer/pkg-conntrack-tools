@@ -815,8 +815,8 @@ static const yytype_uint16 yyrline[] =
     1257,  1276,  1295,  1314,  1323,  1345,  1346,  1348,  1407,  1467,
     1476,  1490,  1491,  1493,  1495,  1505,  1506,  1509,  1510,  1511,
     1512,  1513,  1516,  1521,  1525,  1530,  1535,  1540,  1572,  1577,
-    1582,  1583,  1586,  1589,  1686,  1687,  1690,  1693,  1704,  1715,
-    1737,  1738,  1741,  1742,  1745,  1760
+    1582,  1583,  1586,  1589,  1691,  1692,  1695,  1698,  1709,  1720,
+    1742,  1743,  1746,  1747,  1750,  1765
 };
 #endif
 
@@ -3949,12 +3949,17 @@ yyreduce:
 		exit(EXIT_FAILURE);
 	}
 
-	/* XXX use configure.ac definitions. */
-	helper = helper_find("/usr/lib/conntrack-tools", (yyvsp[(2) - (7)].string), l4proto, RTLD_NOW);
+#ifdef BUILD_CTHELPER
+	helper = helper_find(CONNTRACKD_LIB_DIR, (yyvsp[(2) - (7)].string), l4proto, RTLD_NOW);
 	if (helper == NULL) {
 		print_err(CTD_CFG_ERROR, "Unknown `%s' helper", (yyvsp[(2) - (7)].string));
 		exit(EXIT_FAILURE);
 	}
+#else
+	print_err(CTD_CFG_ERROR, "Helper support is disabled, recompile "
+				 "conntrackd");
+	exit(EXIT_FAILURE);
+#endif
 
 	helper_inst = calloc(1, sizeof(struct ctd_helper_instance));
 	if (helper_inst == NULL)
@@ -4024,7 +4029,7 @@ yyreduce:
   case 257:
 
 /* Line 1806 of yacc.c  */
-#line 1694 "read_config_yy.y"
+#line 1699 "read_config_yy.y"
     {
 	int *qnum;
 	struct stack_item *e;
@@ -4039,7 +4044,7 @@ yyreduce:
   case 258:
 
 /* Line 1806 of yacc.c  */
-#line 1705 "read_config_yy.y"
+#line 1710 "read_config_yy.y"
     {
 	int *qlen;
 	struct stack_item *e;
@@ -4054,7 +4059,7 @@ yyreduce:
   case 259:
 
 /* Line 1806 of yacc.c  */
-#line 1716 "read_config_yy.y"
+#line 1721 "read_config_yy.y"
     {
 	struct stack_item *e;
 	struct ctd_helper_policy *policy;
@@ -4080,7 +4085,7 @@ yyreduce:
   case 264:
 
 /* Line 1806 of yacc.c  */
-#line 1746 "read_config_yy.y"
+#line 1751 "read_config_yy.y"
     {
 	struct stack_item *e;
 	struct ctd_helper_policy *policy;
@@ -4099,7 +4104,7 @@ yyreduce:
   case 265:
 
 /* Line 1806 of yacc.c  */
-#line 1761 "read_config_yy.y"
+#line 1766 "read_config_yy.y"
     {
 	struct stack_item *e;
 	struct ctd_helper_policy *policy;
@@ -4118,7 +4123,7 @@ yyreduce:
 
 
 /* Line 1806 of yacc.c  */
-#line 4122 "read_config_yy.c"
+#line 4127 "read_config_yy.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -4349,7 +4354,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 1775 "read_config_yy.y"
+#line 1780 "read_config_yy.y"
 
 
 int __attribute__((noreturn))
