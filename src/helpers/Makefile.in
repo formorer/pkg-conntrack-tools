@@ -93,12 +93,26 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(pkglibdir)"
 LTLIBRARIES = $(pkglib_LTLIBRARIES)
-ct_helper_ftp_la_LIBADD =
-am_ct_helper_ftp_la_OBJECTS = ct_helper_ftp_la-ftp.lo
-ct_helper_ftp_la_OBJECTS = $(am_ct_helper_ftp_la_OBJECTS)
+ct_helper_amanda_la_LIBADD =
+am_ct_helper_amanda_la_OBJECTS = ct_helper_amanda_la-amanda.lo
+ct_helper_amanda_la_OBJECTS = $(am_ct_helper_amanda_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
+ct_helper_amanda_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(ct_helper_amanda_la_CFLAGS) $(CFLAGS) \
+	$(ct_helper_amanda_la_LDFLAGS) $(LDFLAGS) -o $@
+ct_helper_dhcpv6_la_LIBADD =
+am_ct_helper_dhcpv6_la_OBJECTS = ct_helper_dhcpv6_la-dhcpv6.lo
+ct_helper_dhcpv6_la_OBJECTS = $(am_ct_helper_dhcpv6_la_OBJECTS)
+ct_helper_dhcpv6_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(ct_helper_dhcpv6_la_CFLAGS) $(CFLAGS) \
+	$(ct_helper_dhcpv6_la_LDFLAGS) $(LDFLAGS) -o $@
+ct_helper_ftp_la_LIBADD =
+am_ct_helper_ftp_la_OBJECTS = ct_helper_ftp_la-ftp.lo
+ct_helper_ftp_la_OBJECTS = $(am_ct_helper_ftp_la_OBJECTS)
 ct_helper_ftp_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(ct_helper_ftp_la_CFLAGS) $(CFLAGS) \
@@ -110,6 +124,27 @@ ct_helper_rpc_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(ct_helper_rpc_la_CFLAGS) $(CFLAGS) \
 	$(ct_helper_rpc_la_LDFLAGS) $(LDFLAGS) -o $@
+ct_helper_sane_la_LIBADD =
+am_ct_helper_sane_la_OBJECTS = ct_helper_sane_la-sane.lo
+ct_helper_sane_la_OBJECTS = $(am_ct_helper_sane_la_OBJECTS)
+ct_helper_sane_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(ct_helper_sane_la_CFLAGS) $(CFLAGS) \
+	$(ct_helper_sane_la_LDFLAGS) $(LDFLAGS) -o $@
+ct_helper_ssdp_la_LIBADD =
+am_ct_helper_ssdp_la_OBJECTS = ct_helper_ssdp_la-ssdp.lo
+ct_helper_ssdp_la_OBJECTS = $(am_ct_helper_ssdp_la_OBJECTS)
+ct_helper_ssdp_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(ct_helper_ssdp_la_CFLAGS) $(CFLAGS) \
+	$(ct_helper_ssdp_la_LDFLAGS) $(LDFLAGS) -o $@
+ct_helper_tftp_la_LIBADD =
+am_ct_helper_tftp_la_OBJECTS = ct_helper_tftp_la-tftp.lo
+ct_helper_tftp_la_OBJECTS = $(am_ct_helper_tftp_la_OBJECTS)
+ct_helper_tftp_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(ct_helper_tftp_la_CFLAGS) $(CFLAGS) \
+	$(ct_helper_tftp_la_LDFLAGS) $(LDFLAGS) -o $@
 ct_helper_tns_la_LIBADD =
 am_ct_helper_tns_la_OBJECTS = ct_helper_tns_la-tns.lo
 ct_helper_tns_la_OBJECTS = $(am_ct_helper_tns_la_OBJECTS)
@@ -143,9 +178,15 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(ct_helper_ftp_la_SOURCES) $(ct_helper_rpc_la_SOURCES) \
+SOURCES = $(ct_helper_amanda_la_SOURCES) \
+	$(ct_helper_dhcpv6_la_SOURCES) $(ct_helper_ftp_la_SOURCES) \
+	$(ct_helper_rpc_la_SOURCES) $(ct_helper_sane_la_SOURCES) \
+	$(ct_helper_ssdp_la_SOURCES) $(ct_helper_tftp_la_SOURCES) \
 	$(ct_helper_tns_la_SOURCES)
-DIST_SOURCES = $(ct_helper_ftp_la_SOURCES) $(ct_helper_rpc_la_SOURCES) \
+DIST_SOURCES = $(ct_helper_amanda_la_SOURCES) \
+	$(ct_helper_dhcpv6_la_SOURCES) $(ct_helper_ftp_la_SOURCES) \
+	$(ct_helper_rpc_la_SOURCES) $(ct_helper_sane_la_SOURCES) \
+	$(ct_helper_ssdp_la_SOURCES) $(ct_helper_tftp_la_SOURCES) \
 	$(ct_helper_tns_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -299,19 +340,39 @@ AM_CFLAGS = -std=gnu99 -W -Wall \
 	${LIBNETFILTER_QUEUE_CFLAGS} \
 	${LIBNETFILTER_CTHELPER_CFLAGS}
 
-pkglib_LTLIBRARIES = ct_helper_ftp.la	\
+pkglib_LTLIBRARIES = ct_helper_amanda.la \
+		     ct_helper_dhcpv6.la \
+		     ct_helper_ftp.la	\
 		     ct_helper_rpc.la	\
-		     ct_helper_tns.la
+		     ct_helper_tftp.la	\
+		     ct_helper_tns.la	\
+		     ct_helper_sane.la	\
+		     ct_helper_ssdp.la
 
+ct_helper_amanda_la_SOURCES = amanda.c
+ct_helper_amanda_la_LDFLAGS = -avoid-version -module $(LIBNETFILTER_CONNTRACK_LIBS)
+ct_helper_amanda_la_CFLAGS = $(AM_CFLAGS) $(LIBNETFILTER_CONNTRACK_CFLAGS)
+ct_helper_dhcpv6_la_SOURCES = dhcpv6.c
+ct_helper_dhcpv6_la_LDFLAGS = -avoid-version -module $(LIBNETFILTER_CONNTRACK_LIBS)
+ct_helper_dhcpv6_la_CFLAGS = $(AM_CFLAGS) $(LIBNETFILTER_CONNTRACK_CFLAGS)
 ct_helper_ftp_la_SOURCES = ftp.c
 ct_helper_ftp_la_LDFLAGS = -avoid-version -module $(LIBNETFILTER_CONNTRACK_LIBS)
 ct_helper_ftp_la_CFLAGS = $(AM_CFLAGS) $(LIBNETFILTER_CONNTRACK_CFLAGS)
 ct_helper_rpc_la_SOURCES = rpc.c
 ct_helper_rpc_la_LDFLAGS = -avoid-version -module $(LIBNETFILTER_CONNTRACK_LIBS)
 ct_helper_rpc_la_CFLAGS = $(AM_CFLAGS) $(LIBNETFILTER_CONNTRACK_CFLAGS)
+ct_helper_tftp_la_SOURCES = tftp.c
+ct_helper_tftp_la_LDFLAGS = -avoid-version -module $(LIBNETFILTER_CONNTRACK_LIBS)
+ct_helper_tftp_la_CFLAGS = $(AM_CFLAGS) $(LIBNETFILTER_CONNTRACK_CFLAGS)
 ct_helper_tns_la_SOURCES = tns.c
 ct_helper_tns_la_LDFLAGS = -avoid-version -module $(LIBNETFILTER_CONNTRACK_LIBS)
 ct_helper_tns_la_CFLAGS = $(AM_CFLAGS) $(LIBNETFILTER_CONNTRACK_CFLAGS)
+ct_helper_sane_la_SOURCES = sane.c
+ct_helper_sane_la_LDFLAGS = -avoid-version -module $(LIBNETFILTER_CONNTRACK_LIBS)
+ct_helper_sane_la_CFLAGS = $(AM_CFLAGS) $(LIBNETFILTER_CONNTRACK_CFLAGS)
+ct_helper_ssdp_la_SOURCES = ssdp.c
+ct_helper_ssdp_la_LDFLAGS = -avoid-version -module $(LIBNETFILTER_CONNTRACK_LIBS)
+ct_helper_ssdp_la_CFLAGS = $(AM_CFLAGS) $(LIBNETFILTER_CONNTRACK_CFLAGS)
 all: all-am
 
 .SUFFIXES:
@@ -379,10 +440,20 @@ clean-pkglibLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
+ct_helper_amanda.la: $(ct_helper_amanda_la_OBJECTS) $(ct_helper_amanda_la_DEPENDENCIES) $(EXTRA_ct_helper_amanda_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(ct_helper_amanda_la_LINK) -rpath $(pkglibdir) $(ct_helper_amanda_la_OBJECTS) $(ct_helper_amanda_la_LIBADD) $(LIBS)
+ct_helper_dhcpv6.la: $(ct_helper_dhcpv6_la_OBJECTS) $(ct_helper_dhcpv6_la_DEPENDENCIES) $(EXTRA_ct_helper_dhcpv6_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(ct_helper_dhcpv6_la_LINK) -rpath $(pkglibdir) $(ct_helper_dhcpv6_la_OBJECTS) $(ct_helper_dhcpv6_la_LIBADD) $(LIBS)
 ct_helper_ftp.la: $(ct_helper_ftp_la_OBJECTS) $(ct_helper_ftp_la_DEPENDENCIES) $(EXTRA_ct_helper_ftp_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(ct_helper_ftp_la_LINK) -rpath $(pkglibdir) $(ct_helper_ftp_la_OBJECTS) $(ct_helper_ftp_la_LIBADD) $(LIBS)
 ct_helper_rpc.la: $(ct_helper_rpc_la_OBJECTS) $(ct_helper_rpc_la_DEPENDENCIES) $(EXTRA_ct_helper_rpc_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(ct_helper_rpc_la_LINK) -rpath $(pkglibdir) $(ct_helper_rpc_la_OBJECTS) $(ct_helper_rpc_la_LIBADD) $(LIBS)
+ct_helper_sane.la: $(ct_helper_sane_la_OBJECTS) $(ct_helper_sane_la_DEPENDENCIES) $(EXTRA_ct_helper_sane_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(ct_helper_sane_la_LINK) -rpath $(pkglibdir) $(ct_helper_sane_la_OBJECTS) $(ct_helper_sane_la_LIBADD) $(LIBS)
+ct_helper_ssdp.la: $(ct_helper_ssdp_la_OBJECTS) $(ct_helper_ssdp_la_DEPENDENCIES) $(EXTRA_ct_helper_ssdp_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(ct_helper_ssdp_la_LINK) -rpath $(pkglibdir) $(ct_helper_ssdp_la_OBJECTS) $(ct_helper_ssdp_la_LIBADD) $(LIBS)
+ct_helper_tftp.la: $(ct_helper_tftp_la_OBJECTS) $(ct_helper_tftp_la_DEPENDENCIES) $(EXTRA_ct_helper_tftp_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(ct_helper_tftp_la_LINK) -rpath $(pkglibdir) $(ct_helper_tftp_la_OBJECTS) $(ct_helper_tftp_la_LIBADD) $(LIBS)
 ct_helper_tns.la: $(ct_helper_tns_la_OBJECTS) $(ct_helper_tns_la_DEPENDENCIES) $(EXTRA_ct_helper_tns_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(ct_helper_tns_la_LINK) -rpath $(pkglibdir) $(ct_helper_tns_la_OBJECTS) $(ct_helper_tns_la_LIBADD) $(LIBS)
 
@@ -392,8 +463,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ct_helper_amanda_la-amanda.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ct_helper_dhcpv6_la-dhcpv6.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ct_helper_ftp_la-ftp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ct_helper_rpc_la-rpc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ct_helper_sane_la-sane.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ct_helper_ssdp_la-ssdp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ct_helper_tftp_la-tftp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ct_helper_tns_la-tns.Plo@am__quote@
 
 .c.o:
@@ -420,6 +496,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
+ct_helper_amanda_la-amanda.lo: amanda.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_amanda_la_CFLAGS) $(CFLAGS) -MT ct_helper_amanda_la-amanda.lo -MD -MP -MF $(DEPDIR)/ct_helper_amanda_la-amanda.Tpo -c -o ct_helper_amanda_la-amanda.lo `test -f 'amanda.c' || echo '$(srcdir)/'`amanda.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ct_helper_amanda_la-amanda.Tpo $(DEPDIR)/ct_helper_amanda_la-amanda.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='amanda.c' object='ct_helper_amanda_la-amanda.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_amanda_la_CFLAGS) $(CFLAGS) -c -o ct_helper_amanda_la-amanda.lo `test -f 'amanda.c' || echo '$(srcdir)/'`amanda.c
+
+ct_helper_dhcpv6_la-dhcpv6.lo: dhcpv6.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_dhcpv6_la_CFLAGS) $(CFLAGS) -MT ct_helper_dhcpv6_la-dhcpv6.lo -MD -MP -MF $(DEPDIR)/ct_helper_dhcpv6_la-dhcpv6.Tpo -c -o ct_helper_dhcpv6_la-dhcpv6.lo `test -f 'dhcpv6.c' || echo '$(srcdir)/'`dhcpv6.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ct_helper_dhcpv6_la-dhcpv6.Tpo $(DEPDIR)/ct_helper_dhcpv6_la-dhcpv6.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dhcpv6.c' object='ct_helper_dhcpv6_la-dhcpv6.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_dhcpv6_la_CFLAGS) $(CFLAGS) -c -o ct_helper_dhcpv6_la-dhcpv6.lo `test -f 'dhcpv6.c' || echo '$(srcdir)/'`dhcpv6.c
+
 ct_helper_ftp_la-ftp.lo: ftp.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_ftp_la_CFLAGS) $(CFLAGS) -MT ct_helper_ftp_la-ftp.lo -MD -MP -MF $(DEPDIR)/ct_helper_ftp_la-ftp.Tpo -c -o ct_helper_ftp_la-ftp.lo `test -f 'ftp.c' || echo '$(srcdir)/'`ftp.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ct_helper_ftp_la-ftp.Tpo $(DEPDIR)/ct_helper_ftp_la-ftp.Plo
@@ -433,6 +523,27 @@ ct_helper_rpc_la-rpc.lo: rpc.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='rpc.c' object='ct_helper_rpc_la-rpc.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_rpc_la_CFLAGS) $(CFLAGS) -c -o ct_helper_rpc_la-rpc.lo `test -f 'rpc.c' || echo '$(srcdir)/'`rpc.c
+
+ct_helper_sane_la-sane.lo: sane.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_sane_la_CFLAGS) $(CFLAGS) -MT ct_helper_sane_la-sane.lo -MD -MP -MF $(DEPDIR)/ct_helper_sane_la-sane.Tpo -c -o ct_helper_sane_la-sane.lo `test -f 'sane.c' || echo '$(srcdir)/'`sane.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ct_helper_sane_la-sane.Tpo $(DEPDIR)/ct_helper_sane_la-sane.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='sane.c' object='ct_helper_sane_la-sane.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_sane_la_CFLAGS) $(CFLAGS) -c -o ct_helper_sane_la-sane.lo `test -f 'sane.c' || echo '$(srcdir)/'`sane.c
+
+ct_helper_ssdp_la-ssdp.lo: ssdp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_ssdp_la_CFLAGS) $(CFLAGS) -MT ct_helper_ssdp_la-ssdp.lo -MD -MP -MF $(DEPDIR)/ct_helper_ssdp_la-ssdp.Tpo -c -o ct_helper_ssdp_la-ssdp.lo `test -f 'ssdp.c' || echo '$(srcdir)/'`ssdp.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ct_helper_ssdp_la-ssdp.Tpo $(DEPDIR)/ct_helper_ssdp_la-ssdp.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='ssdp.c' object='ct_helper_ssdp_la-ssdp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_ssdp_la_CFLAGS) $(CFLAGS) -c -o ct_helper_ssdp_la-ssdp.lo `test -f 'ssdp.c' || echo '$(srcdir)/'`ssdp.c
+
+ct_helper_tftp_la-tftp.lo: tftp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_tftp_la_CFLAGS) $(CFLAGS) -MT ct_helper_tftp_la-tftp.lo -MD -MP -MF $(DEPDIR)/ct_helper_tftp_la-tftp.Tpo -c -o ct_helper_tftp_la-tftp.lo `test -f 'tftp.c' || echo '$(srcdir)/'`tftp.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ct_helper_tftp_la-tftp.Tpo $(DEPDIR)/ct_helper_tftp_la-tftp.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tftp.c' object='ct_helper_tftp_la-tftp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_tftp_la_CFLAGS) $(CFLAGS) -c -o ct_helper_tftp_la-tftp.lo `test -f 'tftp.c' || echo '$(srcdir)/'`tftp.c
 
 ct_helper_tns_la-tns.lo: tns.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ct_helper_tns_la_CFLAGS) $(CFLAGS) -MT ct_helper_tns_la-tns.lo -MD -MP -MF $(DEPDIR)/ct_helper_tns_la-tns.Tpo -c -o ct_helper_tns_la-tns.lo `test -f 'tns.c' || echo '$(srcdir)/'`tns.c
