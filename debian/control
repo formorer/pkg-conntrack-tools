@@ -1,6 +1,6 @@
 Source: conntrack
 Section: net
-Priority: optional
+Priority: extra
 Maintainer: Alexander Wirt <formorer@debian.org>
 Uploaders: Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>
 Homepage: http://conntrack-tools.netfilter.org/
