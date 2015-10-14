@@ -1,3 +1,10 @@
+conntrack-tools (1:1.4.3-2) unstable; urgency=medium
+
+  * [ef76f4f] conntrack-tools: rename source package
+  * [959d85b] conntrack-tools: add -dbg binary package
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Wed, 14 Oct 2015 11:48:40 +0200
+
 conntrack (1:1.4.3-1) unstable; urgency=medium
 
   * [db73d0e] Imported Upstream version 1.4.3
