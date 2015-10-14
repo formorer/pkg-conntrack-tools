@@ -44,3 +44,15 @@ Description: Tool to interact with the connection tracking system
  Connection Tracking System.
  .
  By now, the supported subsystem is timeout.
+
+Package: conntrack-tools-dbg
+Architecture: linux-any
+Section: debug
+Depends: conntrack (= ${binary:Version}) | conntrackd (= ${binary:Version}) | nfct (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: debugging symbols for conntrack-tools
+ The conntrack-tools software set is currently is composed of 'conntrack',
+ 'conntrackd' and 'nfct'.
+ .
+ This package contains the debugging symbols for all of them.
