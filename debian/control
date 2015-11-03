@@ -14,7 +14,9 @@ Build-Depends: autotools-dev,
                libnetfilter-cthelper0-dev,
                libnetfilter-cttimeout-dev (>= 1.0.0),
                libnetfilter-queue-dev (>= 1.0.2),
-               libnfnetlink-dev (>= 1.0.1)
+               libnfnetlink-dev (>= 1.0.1),
+	       libsystemd-dev (>= 224),
+	       autoconf, automake, libtool
 Standards-Version: 3.9.6
 Vcs-Git: https://github.com/formorer/pkg-conntrack-tools.git
 Vcs-Browser: https://github.com/formorer/pkg-conntrack-tools.git

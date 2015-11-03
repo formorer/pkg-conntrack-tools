@@ -2,11 +2,13 @@
 Description=Conntrack Daemon
 
 [Service]
+Type=notify
 EnvironmentFile=-/usr/share/conntrackd/environmentfile
 EnvironmentFile=-/etc/default/conntrackd
 ExecStart=/usr/sbin/conntrackd -C "$CONFIG" $OPTIONS
 ProtectSystem=full
 ProtectHome=true
+#WatchdogSec=60
 
 [Install]
 WantedBy=multi-user.target

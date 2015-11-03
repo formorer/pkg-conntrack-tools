@@ -7,6 +7,10 @@
 	dh $@ --with systemd,autotools-dev
 
 override_dh_auto_configure:
+	# systemd support not merged upstream yet
+	autoreconf -fi
+	rm -Rf autom4te.cache
+
 	./configure --prefix=/usr --disable-silent-rules
 
 override_dh_strip:
