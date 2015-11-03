@@ -52,7 +52,7 @@ Depends: conntrack (= ${binary:Version}) | conntrackd (= ${binary:Version}) | nf
          ${misc:Depends},
          ${shlibs:Depends}
 Description: debugging symbols for conntrack-tools
- The conntrack-tools software set is currently is composed of 'conntrack',
+ The conntrack-tools software set is currently composed of 'conntrack',
  'conntrackd' and 'nfct'.
  .
  This package contains the debugging symbols for all of them.
