@@ -1,3 +1,10 @@
+conntrack-tools (1:1.4.3-3) unstable; urgency=medium
+
+  * [8689754] d/control: fix typo in conntrack-tools-dbg long description
+  * [b403285] conntrackd: add libsystemd integration
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Thu, 05 Nov 2015 13:00:09 +0100
+
 conntrack-tools (1:1.4.3-2) unstable; urgency=medium
 
   * [ef76f4f] conntrack-tools: rename source package
