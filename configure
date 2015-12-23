@@ -635,6 +635,10 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+HAVE_SYSTEMD_FALSE
+HAVE_SYSTEMD_TRUE
+LIBSYSTEMD_LIBS
+LIBSYSTEMD_CFLAGS
 HAVE_CTHELPER_FALSE
 HAVE_CTHELPER_TRUE
 LIBNETFILTER_QUEUE_LIBS
@@ -786,6 +790,7 @@ with_sysroot
 enable_libtool_lock
 enable_cthelper
 enable_cttimeout
+enable_systemd
 '
       ac_precious_vars='build_alias
 host_alias
@@ -812,7 +817,9 @@ LIBNETFILTER_CTTIMEOUT_LIBS
 LIBNETFILTER_CTHELPER_CFLAGS
 LIBNETFILTER_CTHELPER_LIBS
 LIBNETFILTER_QUEUE_CFLAGS
-LIBNETFILTER_QUEUE_LIBS'
+LIBNETFILTER_QUEUE_LIBS
+LIBSYSTEMD_CFLAGS
+LIBSYSTEMD_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1442,6 +1449,7 @@ Optional Features:
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --disable-cthelper      Do not build userspace helper support
   --disable-cttimeout     Do not build timeout support
+  --enable-systemd        Build systemd support
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -1498,6 +1506,10 @@ Some influential environment variables:
               C compiler flags for LIBNETFILTER_QUEUE, overriding pkg-config
   LIBNETFILTER_QUEUE_LIBS
               linker flags for LIBNETFILTER_QUEUE, overriding pkg-config
+  LIBSYSTEMD_CFLAGS
+              C compiler flags for LIBSYSTEMD, overriding pkg-config
+  LIBSYSTEMD_LIBS
+              linker flags for LIBSYSTEMD, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -12621,16 +12633,23 @@ fi
 
 # Check whether --enable-cthelper was given.
 if test "${enable_cthelper+set}" = set; then :
-  enableval=$enable_cthelper; enable_cthelper="no"
+  enableval=$enable_cthelper; enable_cthelper="$enableval"
 else
   enable_cthelper="yes"
 fi
 
 # Check whether --enable-cttimeout was given.
 if test "${enable_cttimeout+set}" = set; then :
-  enableval=$enable_cttimeout; enable_cttimeout="no"
+  enableval=$enable_cttimeout; enable_cttimeout="$enableval"
 else
   enable_cttimeout="yes"
+fi
+
+# Check whether --enable-systemd was given.
+if test "${enable_systemd+set}" = set; then :
+  enableval=$enable_systemd; enable_systemd="$enableval"
+else
+  enable_systemd="no"
 fi
 
 
@@ -13329,6 +13348,113 @@ else
 fi
 
 
+if test "x$enable_systemd" = "xyes"; then :
+
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for LIBSYSTEMD" >&5
+$as_echo_n "checking for LIBSYSTEMD... " >&6; }
+
+if test -n "$LIBSYSTEMD_CFLAGS"; then
+    pkg_cv_LIBSYSTEMD_CFLAGS="$LIBSYSTEMD_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libsystemd >= 227\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libsystemd >= 227") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_LIBSYSTEMD_CFLAGS=`$PKG_CONFIG --cflags "libsystemd >= 227" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$LIBSYSTEMD_LIBS"; then
+    pkg_cv_LIBSYSTEMD_LIBS="$LIBSYSTEMD_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libsystemd >= 227\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libsystemd >= 227") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_LIBSYSTEMD_LIBS=`$PKG_CONFIG --libs "libsystemd >= 227" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBSYSTEMD_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libsystemd >= 227" 2>&1`
+        else
+	        LIBSYSTEMD_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libsystemd >= 227" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBSYSTEMD_PKG_ERRORS" >&5
+
+	as_fn_error $? "Package requirements (libsystemd >= 227) were not met:
+
+$LIBSYSTEMD_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables LIBSYSTEMD_CFLAGS
+and LIBSYSTEMD_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details." "$LINENO" 5
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables LIBSYSTEMD_CFLAGS
+and LIBSYSTEMD_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details" "$LINENO" 5; }
+else
+	LIBSYSTEMD_CFLAGS=$pkg_cv_LIBSYSTEMD_CFLAGS
+	LIBSYSTEMD_LIBS=$pkg_cv_LIBSYSTEMD_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+fi
+
+$as_echo "#define BUILD_SYSTEMD 1" >>confdefs.h
+
+
+fi
+ if test "x$enable_systemd" = "xyes"; then
+  HAVE_SYSTEMD_TRUE=
+  HAVE_SYSTEMD_FALSE='#'
+else
+  HAVE_SYSTEMD_TRUE='#'
+  HAVE_SYSTEMD_FALSE=
+fi
+
+
 for ac_header in linux/capability.h
 do :
   ac_fn_c_check_header_mongrel "$LINENO" "linux/capability.h" "ac_cv_header_linux_capability_h" "$ac_includes_default"
@@ -13607,6 +13733,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${HAVE_CTHELPER_TRUE}" && test -z "${HAVE_CTHELPER_FALSE}"; then
   as_fn_error $? "conditional \"HAVE_CTHELPER\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${HAVE_SYSTEMD_TRUE}" && test -z "${HAVE_SYSTEMD_FALSE}"; then
+  as_fn_error $? "conditional \"HAVE_SYSTEMD\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
@@ -15663,4 +15793,5 @@ fi
 echo "
 conntrack-tools configuration:
   userspace conntrack helper support:	${enable_cthelper}
-  conntrack timeout support:		${enable_cttimeout}"
+  conntrack timeout support:		${enable_cttimeout}
+  systemd support:			${enable_systemd}"

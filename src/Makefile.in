@@ -62,7 +62,9 @@ sbin_PROGRAMS = conntrack$(EXEEXT) conntrackd$(EXEEXT) nfct$(EXEEXT)
 @HAVE_CTTIMEOUT_TRUE@am__append_3 = ${LIBNETFILTER_CTTIMEOUT_LIBS}
 @HAVE_CTHELPER_TRUE@am__append_4 = ${LIBNETFILTER_CTHELPER_LIBS}
 @HAVE_CTHELPER_TRUE@am__append_5 = cthelper.c helpers.c utils.c expect.c
-@HAVE_CTHELPER_TRUE@am__append_6 = ${LIBNETFILTER_CTHELPER_LIBS} ${LIBNETFILTER_QUEUE_LIBS}
+@HAVE_SYSTEMD_TRUE@am__append_6 = systemd.c
+@HAVE_CTHELPER_TRUE@am__append_7 = ${LIBNETFILTER_CTHELPER_LIBS} ${LIBNETFILTER_QUEUE_LIBS}
+@HAVE_SYSTEMD_TRUE@am__append_8 = ${LIBSYSTEMD_LIBS}
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -102,10 +104,11 @@ am__conntrackd_SOURCES_DIST = alarm.c main.c run.c hash.c queue.c \
 	channel_tcp.c external_cache.c external_inject.c \
 	internal_cache.c internal_bypass.c read_config_yy.y \
 	read_config_lex.l stack.c cthelper.c helpers.c utils.c \
-	expect.c
+	expect.c systemd.c
 @HAVE_CTHELPER_TRUE@am__objects_1 = cthelper.$(OBJEXT) \
 @HAVE_CTHELPER_TRUE@	helpers.$(OBJEXT) utils.$(OBJEXT) \
 @HAVE_CTHELPER_TRUE@	expect.$(OBJEXT)
+@HAVE_SYSTEMD_TRUE@am__objects_2 = systemd.$(OBJEXT)
 am_conntrackd_OBJECTS = alarm.$(OBJEXT) main.$(OBJEXT) run.$(OBJEXT) \
 	hash.$(OBJEXT) queue.$(OBJEXT) rbtree.$(OBJEXT) \
 	local.$(OBJEXT) log.$(OBJEXT) mcast.$(OBJEXT) udp.$(OBJEXT) \
@@ -122,29 +125,31 @@ am_conntrackd_OBJECTS = alarm.$(OBJEXT) main.$(OBJEXT) run.$(OBJEXT) \
 	channel_tcp.$(OBJEXT) external_cache.$(OBJEXT) \
 	external_inject.$(OBJEXT) internal_cache.$(OBJEXT) \
 	internal_bypass.$(OBJEXT) read_config_yy.$(OBJEXT) \
-	read_config_lex.$(OBJEXT) stack.$(OBJEXT) $(am__objects_1)
+	read_config_lex.$(OBJEXT) stack.$(OBJEXT) $(am__objects_1) \
+	$(am__objects_2)
 conntrackd_OBJECTS = $(am_conntrackd_OBJECTS)
 @HAVE_CTHELPER_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) \
 @HAVE_CTHELPER_TRUE@	$(am__DEPENDENCIES_1)
+@HAVE_SYSTEMD_TRUE@am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1)
 conntrackd_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3)
 conntrackd_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(conntrackd_LDFLAGS) $(LDFLAGS) -o $@
 am__nfct_SOURCES_DIST = nfct.c helpers.c nfct-extensions/helper.c \
 	nfct-extensions/timeout.c
 am__dirstamp = $(am__leading_dot)dirstamp
-@HAVE_CTHELPER_TRUE@am__objects_2 = helpers.$(OBJEXT) \
+@HAVE_CTHELPER_TRUE@am__objects_3 = helpers.$(OBJEXT) \
 @HAVE_CTHELPER_TRUE@	nfct-extensions/helper.$(OBJEXT)
-@HAVE_CTTIMEOUT_TRUE@am__objects_3 =  \
+@HAVE_CTTIMEOUT_TRUE@am__objects_4 =  \
 @HAVE_CTTIMEOUT_TRUE@	nfct-extensions/timeout.$(OBJEXT)
-am_nfct_OBJECTS = nfct.$(OBJEXT) $(am__objects_2) $(am__objects_3)
+am_nfct_OBJECTS = nfct.$(OBJEXT) $(am__objects_3) $(am__objects_4)
 nfct_OBJECTS = $(am_nfct_OBJECTS)
-@HAVE_CTTIMEOUT_TRUE@am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1)
-@HAVE_CTHELPER_TRUE@am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1)
+@HAVE_CTTIMEOUT_TRUE@am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1)
+@HAVE_CTHELPER_TRUE@am__DEPENDENCIES_5 = $(am__DEPENDENCIES_1)
 nfct_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4)
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5)
 nfct_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(nfct_LDFLAGS) $(LDFLAGS) -o $@
@@ -286,6 +291,8 @@ LIBNFNETLINK_CFLAGS = @LIBNFNETLINK_CFLAGS@
 LIBNFNETLINK_LIBS = @LIBNFNETLINK_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
+LIBSYSTEMD_CFLAGS = @LIBSYSTEMD_CFLAGS@
+LIBSYSTEMD_LIBS = @LIBSYSTEMD_LIBS@
 LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
@@ -398,9 +405,10 @@ conntrackd_SOURCES = alarm.c main.c run.c hash.c queue.c rbtree.c \
 	channel_mcast.c channel_udp.c tcp.c channel_tcp.c \
 	external_cache.c external_inject.c internal_cache.c \
 	internal_bypass.c read_config_yy.y read_config_lex.l stack.c \
-	$(am__append_5)
+	$(am__append_5) $(am__append_6)
 conntrackd_LDADD = ${LIBMNL_LIBS} ${LIBNETFILTER_CONNTRACK_LIBS} \
-	${libdl_LIBS} ${LIBNFNETLINK_LIBS} $(am__append_6)
+	${libdl_LIBS} ${LIBNFNETLINK_LIBS} $(am__append_7) \
+	$(am__append_8)
 conntrackd_LDFLAGS = -export-dynamic
 EXTRA_DIST = read_config_yy.h
 all: all-recursive
@@ -562,6 +570,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sync-ftfw.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sync-mode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sync-notrack.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/systemd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tcp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/traffic_stats.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/udp.Po@am__quote@
