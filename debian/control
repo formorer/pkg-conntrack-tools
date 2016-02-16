@@ -17,7 +17,7 @@ Build-Depends: autotools-dev,
                libnfnetlink-dev (>= 1.0.1),
 	       libsystemd-dev (>= 224),
 	       autoconf, automake, libtool
-Standards-Version: 3.9.6
+Standards-Version: 3.9.7
 Vcs-Git: https://github.com/formorer/pkg-conntrack-tools.git
 Vcs-Browser: https://github.com/formorer/pkg-conntrack-tools.git
 XS-Testsuite: autopkgtest
