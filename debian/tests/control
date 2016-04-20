@@ -5,3 +5,7 @@ Restrictions: needs-root
 Test-Command: conntrack -h
 Depends: @
 Restrictions: needs-root
+
+Test-Command: nfct version
+Depends: @
+Resstrictions: needs-root
