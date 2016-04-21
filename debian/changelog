@@ -1,3 +1,14 @@
+conntrack-tools (1:1.4.3-4) unstable; urgency=medium
+
+  * [037ef6d] d/control: bump standards to 3.9.7
+  * [6e3d731] d/control: bump build-dep on libsystemd-dev to >= 227
+    (Closes: #804233)
+  * [1bc9b27] d/tests/control: add basic test for nfct
+  * [3674978] d/tests/control: fix typo in nfct restrictions
+  * [7910616] d/changelog: generate entry for
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Thu, 21 Apr 2016 11:11:45 +0200
+
 conntrack-tools (1:1.4.3-3) unstable; urgency=medium
 
   * [8689754] d/control: fix typo in conntrack-tools-dbg long description
