@@ -8,4 +8,4 @@ Restrictions: needs-root
 
 Test-Command: nfct version
 Depends: @
-Resstrictions: needs-root
+Restrictions: needs-root
