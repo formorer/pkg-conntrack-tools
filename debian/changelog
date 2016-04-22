@@ -1,3 +1,11 @@
+conntrack-tools (1:1.4.3-5) unstable; urgency=medium
+
+  * [12d2949] d/control: bump standars-versions to 3.9.8
+  * [339eced] d/control: get rid of XS-Testsuite directive
+  * [f7f08b5] d/tests/control: fix version call of nfct command
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Fri, 22 Apr 2016 10:01:25 +0200
+
 conntrack-tools (1:1.4.3-4) unstable; urgency=medium
 
   * [037ef6d] d/control: bump standards to 3.9.7
