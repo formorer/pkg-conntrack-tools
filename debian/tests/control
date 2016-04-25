@@ -9,3 +9,7 @@ Restrictions: needs-root
 Test-Command: nfct version list
 Depends: @
 Restrictions: needs-root
+
+Tests: basic-daemon-test.sh
+Depends: @
+Restrictions: needs-root, isolation-container
