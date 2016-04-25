@@ -1,3 +1,10 @@
+conntrack-tools (1:1.4.3-6) unstable; urgency=medium
+
+  * [636be6c] d/tests: add basic-daemon-test.sh
+  * [b2a7139] d/tests: add systemd-service-test.sh
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Mon, 25 Apr 2016 13:40:59 +0200
+
 conntrack-tools (1:1.4.3-5) unstable; urgency=medium
 
   * [12d2949] d/control: bump standars-versions to 3.9.8
