@@ -6,7 +6,7 @@ ETC_SERVICE_FILE="/etc/systemd/system/${SERVICE}"
 LIB_SERVICE_FILE="/lib/systemd/system/${SERVICE}"
 CONFIG_FILE="/etc/conntrackd/conntrackd.conf"
 
-if [ ! -r $LIB_SERVICE_FILE ; then
+if [ ! -r $LIB_SERVICE_FILE ] ; then
 	echo "E: unable to read $LIB_SERVICE_FILE" >&2
 	exit 1
 fi
