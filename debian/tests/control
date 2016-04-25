@@ -13,3 +13,7 @@ Restrictions: needs-root
 Tests: basic-daemon-test.sh
 Depends: @
 Restrictions: needs-root, isolation-container
+
+Tests: systemd-service-test.sh
+Depends: @, systemd, procps
+Restrictions: needs-root, isolation-container
