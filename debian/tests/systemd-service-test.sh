@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -ex
+
 SERVICE="conntrackd.service"
 WATCHDOG_TIME="5"
 ETC_SERVICE_FILE="/etc/systemd/system/${SERVICE}"
@@ -7,13 +9,22 @@ LIB_SERVICE_FILE="/lib/systemd/system/${SERVICE}"
 CONFIG_FILE="/etc/conntrackd/conntrackd.conf"
 
 if [ ! -r $LIB_SERVICE_FILE ] ; then
-	echo "E: unable to read $LIB_SERVICE_FILE" >&2
+	: ERROR unable to read $LIB_SERVICE_FILE
 	exit 1
 fi
 if [ ! -w $CONFIG_FILE ] ; then
-	echo "E: Unable to write to $CONFIG_FILE" >&2
+	: ERROR unable to write to $CONFIG_FILE
 	exit 1
 fi
+
+systemctl_action()
+{
+	if ! systemctl $1 $SERVICE ; then
+		journalctl -u $SERVICE
+		return 1
+	fi
+	return 0
+}
 
 echo "
 Sync {
@@ -62,14 +73,15 @@ General {
 	EventIterationLimit 10
 }" > $CONFIG_FILE
 
-set -e
-
 #
 # before start, package installation may start the daemon
 #
 if systemctl -q is-active $SERVICE ; then
-	echo "W: initial service running, stopping now" >&2
-	systemctl stop $SERVICE
+	: WARNING initial service running, stopping now
+	if ! systemctl_action stop ; then
+		: ERROR cant stop initial service
+		exit 1
+	fi
 fi
 
 #
@@ -82,10 +94,12 @@ systemctl daemon-reload
 #
 # First run of the daemon and basic checks
 #
-systemctl start $SERVICE
+if ! systemctl_action start ; then
+	: ERROR cant start the service
+	exit 1
+fi
 sleep $((${WATCHDOG_TIME} * 3)) # wait for potential watchdog errors
-echo "I: doing now basic checks, 'conntrackd -s' and 'systemctl status $SERVICE':"
-conntrackd -s >/dev/null
+conntrackd -s
 systemctl status $SERVICE
 
 #
@@ -94,18 +108,21 @@ systemctl status $SERVICE
 conntrackd -k
 sleep 5 # be friendly with the daemon shutdown time
 if systemctl -q is-active $SERVICE ; then
-	echo "E: conntrackd manually killed and systemd didn't recogniced it" >&2
+	: ERROR conntrackd manually killed and systemd did not recognice it
 	exit 1
 fi
 
 #
 # Restart the daemon
 #
-systemctl restart $SERVICE
+if ! systemctl_action restart ; then
+	: ERROR unable to restart conntrackd
+	exit 1
+fi
 sleep $((${WATCHDOG_TIME} * 3)) # wait for potential watchdog errors
 if ! systemctl -q is-active $SERVICE ; then
-	echo "E: conntrackd was unable to restart, lockfile?" >&2
-	systemctl status $SERVICE
+	journalctl -u $SERVICE
+	: ERROR conntrackd not active after restart
 	exit 1
 fi
 
@@ -116,8 +133,9 @@ PID=$(systemctl show $SERVICE | grep ^MainPID= | awk -F'=' '{print $2}')
 kill -s STOP $PID
 sleep $((${WATCHDOG_TIME} * 3)) # wait for potential watchdog errors
 if ! journalctl -u $SERVICE | grep "Watchdog timeout" >/dev/null ; then
-	echo "E: watchdog timeout not detected" >&2
+	: ERROR watchdog timeout not detected
 	exit 1
 fi
 
+: INFO all tests OK
 exit 0
