@@ -1,3 +1,15 @@
+conntrack-tools (1:1.4.3-8) unstable; urgency=medium
+
+  * [a464db2] d/tests/control: allow-stderr for systemd-service-test.sh
+  * [e16e6ed] d/: fix permisions of conntrackd.init and conntrackd.preinst
+  * [a49f439] d/conntrackd.service: include hint about removing lockfile
+    before start
+  * [1f61ab8] d/tests/basic-daemon-test.sh: add a final informative
+    message
+  * [5871886] d/tests: add conntrack-test.sh
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Tue, 26 Apr 2016 16:53:09 +0200
+
 conntrack-tools (1:1.4.3-7) unstable; urgency=medium
 
   * [c9e197b] d/tests/systemd-service-tests.sh: fix missing ']'
