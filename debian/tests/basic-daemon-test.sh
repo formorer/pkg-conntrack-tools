@@ -104,4 +104,5 @@ if conntrackd_running ; then
 	exit 1
 fi
 
+: INFO all tests OK
 exit 0
