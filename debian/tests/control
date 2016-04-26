@@ -17,3 +17,7 @@ Restrictions: needs-root, isolation-container, allow-stderr
 Tests: systemd-service-test.sh
 Depends: @, systemd, procps
 Restrictions: needs-root, isolation-container, allow-stderr
+
+Tests: conntrack-test.sh
+Depends: @
+Restrictions: needs-root, isolation-container, allow-stderr
