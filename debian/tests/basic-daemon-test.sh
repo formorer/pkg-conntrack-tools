@@ -4,14 +4,14 @@ set -ex
 
 LOCKFILE="/var/lock/conntrackd.lock"
 CONFIG_FILE=$(mktemp)
-if [ ! -w $CONFIG_FILE ] ; then
+if [ ! -w "$CONFIG_FILE" ] ; then
 	: ERROR unable to obtain tempfile
 	exit 1
 fi
 
 lockfile_exists()
 {
-	if [ -e $LOCKFILE ] ; then
+	if [ -e "$LOCKFILE" ] ; then
 		: INFO lockfile $LOCKFILE exists
 		return 0
 	else
