@@ -8,11 +8,11 @@ ETC_SERVICE_FILE="/etc/systemd/system/${SERVICE}"
 LIB_SERVICE_FILE="/lib/systemd/system/${SERVICE}"
 CONFIG_FILE="/etc/conntrackd/conntrackd.conf"
 
-if [ ! -r $LIB_SERVICE_FILE ] ; then
+if [ ! -r "$LIB_SERVICE_FILE" ] ; then
 	: ERROR unable to read $LIB_SERVICE_FILE
 	exit 1
 fi
-if [ ! -w $CONFIG_FILE ] ; then
+if [ ! -w "$CONFIG_FILE" ] ; then
 	: ERROR unable to write to $CONFIG_FILE
 	exit 1
 fi
