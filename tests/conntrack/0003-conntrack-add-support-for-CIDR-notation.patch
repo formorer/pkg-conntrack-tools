@@ -1,0 +1,195 @@
+From 6f541a7cd4c562dff5a104737fe9ed1b8ce16b11 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.dk>
+Date: Mon, 1 Feb 2016 13:30:06 +0000
+Subject: [PATCH 3/4] conntrack: add support for CIDR notation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add support for using CIDR notation in --{orig,tuple}-{src,dst} arguments,
+instead of free-form formatting netmask in --mask-{src,dst}.
+
+Example:
+  conntrack -L -s 2001:db8::/56
+
+Instead of:
+  conntrack -L -s 2001:db8:: --mask-src ffff:ffff:ffff:ff00::
+
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.dk>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ conntrack.8     |  4 +++
+ src/conntrack.c | 86 +++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 85 insertions(+), 5 deletions(-)
+
+diff --git a/conntrack.8 b/conntrack.8
+index 5bba1b1..f2c1ca5 100644
+--- a/conntrack.8
++++ b/conntrack.8
+@@ -117,9 +117,11 @@ This option can only be used in conjunction with "\-E, \-\-event".
+ .TP
+ .BI "-s, --orig-src " IP_ADDRESS
+ Match only entries whose source address in the original direction equals the one specified as argument.
++Implies "--mask-src" when CIDR notation is used.
+ .TP
+ .BI "-d, --orig-dst " IP_ADDRESS
+ Match only entries whose destination address in the original direction equals the one specified as argument.
++Implies "--mask-dst" when CIDR notation is used.
+ .TP
+ .BI "-r, --reply-src " IP_ADDRESS
+ Match only entries whose source address in the reply direction equals the one specified as argument.
+@@ -186,9 +188,11 @@ See iptables CT target for more information.
+ .TP
+ .BI "--tuple-src " IP_ADDRESS
+ Specify the tuple source address of an expectation.
++Implies "--mask-src" when CIDR notation is used.
+ .TP
+ .BI "--tuple-dst " IP_ADDRESS
+ Specify the tuple destination address of an expectation.
++Implies "--mask-dst" when CIDR notation is used.
+ .TP
+ .BI "--mask-src " IP_ADDRESS
+ Specify the source address mask.
+diff --git a/src/conntrack.c b/src/conntrack.c
+index fab21d9..b8fe79b 100644
+--- a/src/conntrack.c
++++ b/src/conntrack.c
+@@ -434,6 +434,17 @@ static const int opt2type[] = {
+ 	[')']	= CT_OPT_REPL_ZONE,
+ };
+ 
++static const int opt2maskopt[] = {
++	['s']	= '{',
++	['d']	= '}',
++	['r']	= 0, /* no netmask */
++	['q']	= 0, /* support yet */
++	['{']	= 0,
++	['}']	= 0,
++	['[']	= '{',
++	[']']	= '}',
++};
++
+ static const int opt2family_attr[][2] = {
+ 	['s']	= { ATTR_ORIG_IPV4_SRC,	ATTR_ORIG_IPV6_SRC },
+ 	['d']	= { ATTR_ORIG_IPV4_DST,	ATTR_ORIG_IPV6_DST },
+@@ -684,6 +695,21 @@ static int bit2cmd(int command)
+ 	return i;
+ }
+ 
++static const char *
++get_long_opt(int opt)
++{
++	struct option o;
++	int i;
++
++	for (i = 0 ; ; i++) {
++		o = opts[i];
++		if (o.name == NULL) break;
++		if (o.val == opt)
++			return o.name;
++	}
++	return "unknown";
++}
++
+ int generic_opt_check(int local_options, int num_opts,
+ 		      char *optset, const char *optflg[],
+ 		      unsigned int *coupled_flags, int coupled_flags_size,
+@@ -2103,6 +2129,24 @@ static void merge_bitmasks(struct nfct_bitmask **current,
+ }
+ 
+ static void
++nfct_build_netmask(uint32_t *dst, int b, int n)
++{
++	int i;
++
++	for (i=0;i<n;i++) {
++		if (b >= 32) {
++			dst[i] = 0xffffffff;
++			b -= 32;
++		} else if (b > 0) {
++			dst[i] = (1<<b)-1;
++			b = 0;
++		} else {
++			dst[i] = 0;
++		}
++	}
++}
++
++static void
+ nfct_set_addr_opt(int opt, struct nf_conntrack *ct, union ct_address *ad,
+ 		  int l3protonum)
+ {
+@@ -2124,17 +2168,47 @@ nfct_set_addr_opt(int opt, struct nf_conntrack *ct, union ct_address *ad,
+ 
+ static void
+ nfct_parse_addr_from_opt(int opt, struct nf_conntrack *ct,
++                         struct nf_conntrack *ctmask,
+                          union ct_address *ad, int *family)
+ {
+-	int l3protonum;
++	int l3protonum, mask, maskopt;
+ 
+-	l3protonum = parse_addr(optarg, ad, NULL);
++	l3protonum = parse_addr(optarg, ad, &mask);
+ 	if (l3protonum == AF_UNSPEC) {
+ 		exit_error(PARAMETER_PROBLEM,
+ 			   "Invalid IP address `%s'", optarg);
+ 	}
+ 	set_family(family, l3protonum);
++	maskopt = opt2maskopt[opt];
++	if (!maskopt && mask != -1) {
++		exit_error(PARAMETER_PROBLEM,
++		           "CIDR notation unavailable"
++		           " for `--%s'", get_long_opt(opt));
++	} else if (mask == -2) {
++		exit_error(PARAMETER_PROBLEM,
++		           "Invalid netmask");
++	}
++
+ 	nfct_set_addr_opt(opt, ct, ad, l3protonum);
++
++	/* bail if we don't have a netmask to set*/
++	if (!maskopt || mask == -1 || ctmask == NULL)
++		return;
++
++	switch(l3protonum) {
++	case AF_INET:
++		if (mask == 32)
++			return;
++		nfct_build_netmask(&ad->v4, mask, 1);
++		break;
++	case AF_INET6:
++		if (mask == 128)
++			return;
++		nfct_build_netmask((uint32_t *) &ad->v6, mask, 4);
++		break;
++	}
++
++	nfct_set_addr_opt(maskopt, ctmask, ad, l3protonum);
+ }
+ 
+ int main(int argc, char *argv[])
+@@ -2215,15 +2289,17 @@ int main(int argc, char *argv[])
+ 		case 'd':
+ 		case 'r':
+ 		case 'q':
+-			nfct_parse_addr_from_opt(c, tmpl.ct, &ad, &family);
++			nfct_parse_addr_from_opt(c, tmpl.ct, tmpl.mask,
++			                         &ad, &family);
+ 			break;
+ 		case '[':
+ 		case ']':
+-			nfct_parse_addr_from_opt(c, tmpl.exptuple, &ad, &family);
++			nfct_parse_addr_from_opt(c, tmpl.exptuple, tmpl.mask,
++			                         &ad, &family);
+ 			break;
+ 		case '{':
+ 		case '}':
+-			nfct_parse_addr_from_opt(c, tmpl.mask, &ad, &family);
++			nfct_parse_addr_from_opt(c, tmpl.mask, NULL, &ad, &family);
+ 			break;
+ 		case 'p':
+ 			options |= CT_OPT_PROTO;
+-- 
+2.1.4
+

@@ -17,20 +17,25 @@
 #include <sys/wait.h>
 #include <dirent.h>
 
-#define CT_PROG "/usr/sbin/conntrack"
+#define CT_PROG "../../src/conntrack"
 
 int main()
 {
 	int ret, ok = 0, bad = 0, line;
 	FILE *fp;
-	DIR *d;
 	char buf[1024];
+	struct dirent **dents;
 	struct dirent *dent;
 	char file[1024];
+	int i,n;
 
-	d = opendir("testsuite");
+	n = scandir("testsuite", &dents, NULL, alphasort);
 
-	while ((dent = readdir(d)) != NULL) {
+	for (i = 0; i < n; i++) {
+		dent = dents[i];
+
+		if (dent->d_name[0] == '.')
+			continue;
 
 		sprintf(file, "testsuite/%s", dent->d_name);
 
@@ -63,6 +68,7 @@ int main()
 			strcpy(tmp + strlen(CT_PROG) + 1, buf);
 			printf("(%d) Executing: %s\n", line, tmp);
 
+			fflush(stdout);
 			ret = system(tmp);
 
 			if (WIFEXITED(ret) &&
@@ -88,7 +94,11 @@ int main()
 		}
 		fclose(fp);
 	}
-	closedir(d);
+
+	for (i = 0; i < n; i++)
+		free(dents[i]);
+
+	free(dents);
 
 	fprintf(stdout, "OK: %d BAD: %d\n", ok, bad);
 }
