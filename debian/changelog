@@ -1,12 +1,14 @@
 conntrack-tools (1:1.4.4-1) unstable; urgency=medium
 
   * [0f955ff] d/tests/basic-daemon-test.sh: fix if variable expansion
-  * [763d9d7] d/tests/systemd-service-test.sh: use quotation marks in if statements
+  * [763d9d7] d/tests/systemd-service-test.sh: use quotation marks in if
+    statements
   * [8088e55] Imported Upstream version 1.4.4
   * [57546b7] d/control: bump build-dep on libnetfilter-conntrack
   * [abe93fa] d/patches/: drop all patches
+  * [e43d7fb] d/rules: cleanup systemd integration configuration
 
- -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Mon, 22 Aug 2016 15:00:58 +0200
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Mon, 22 Aug 2016 15:40:47 +0200
 
 conntrack-tools (1:1.4.3-8) unstable; urgency=medium
 
