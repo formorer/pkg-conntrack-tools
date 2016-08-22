@@ -1,4 +1,4 @@
-AC_INIT(conntrack-tools, 1.4.3, pablo@netfilter.org)
+AC_INIT(conntrack-tools, 1.4.4, pablo@netfilter.org)
 AC_CONFIG_AUX_DIR([build-aux])
 
 AC_CANONICAL_HOST
@@ -40,31 +40,19 @@ then
 	exit 1
 fi
 
-AC_MSG_CHECKING(flex version)
-flex_version=`$ac_cv_prog_LEX --version | sed 's/version//g' | awk '/flex/ {print $2}'`
-flex_major=`echo $flex_version| cut -d . -f 1`
-flex_minor=`echo $flex_version| cut -d . -f 2`
-flex_rev=`echo $flex_version| cut -d . -f 3`
- 
-if test "$flex_major" -eq "2" && test "$flex_minor" -eq "5" && test "$flex_rev" -ge "33"; then
-	AC_MSG_RESULT([$flex_version. OK])
-else
-	AC_MSG_WARN([flex version $flex_version found.
-	Version 2.5.33 or greater is required. You may experience problems
-	while compilating the conntrack-tools. Please, consider to upgrade 
-	flex.])
-fi
-
 AC_ARG_ENABLE([cthelper],
         AS_HELP_STRING([--disable-cthelper], [Do not build userspace helper support]),
-        [enable_cthelper="no"], [enable_cthelper="yes"])
+        [enable_cthelper="$enableval"], [enable_cthelper="yes"])
 AC_ARG_ENABLE([cttimeout],
         AS_HELP_STRING([--disable-cttimeout], [Do not build timeout support]),
-        [enable_cttimeout="no"], [enable_cttimeout="yes"])
+        [enable_cttimeout="$enableval"], [enable_cttimeout="yes"])
+AC_ARG_ENABLE([systemd],
+        AS_HELP_STRING([--enable-systemd], [Build systemd support]),
+        [enable_systemd="$enableval"], [enable_systemd="no"])
 
 PKG_CHECK_MODULES([LIBNFNETLINK], [libnfnetlink >= 1.0.1])
 PKG_CHECK_MODULES([LIBMNL], [libmnl >= 1.0.3])
-PKG_CHECK_MODULES([LIBNETFILTER_CONNTRACK], [libnetfilter_conntrack >= 1.0.4])
+PKG_CHECK_MODULES([LIBNETFILTER_CONNTRACK], [libnetfilter_conntrack >= 1.0.6])
 AS_IF([test "x$enable_cttimeout" = "xyes"], [
 	PKG_CHECK_MODULES([LIBNETFILTER_CTTIMEOUT], [libnetfilter_cttimeout >= 1.0.0])
 ])
@@ -76,6 +64,12 @@ AS_IF([test "x$enable_cthelper" = "xyes"], [
 	AC_DEFINE([BUILD_CTHELPER], [1], [Building cthelper support])
 ])
 AM_CONDITIONAL([HAVE_CTHELPER], [test "x$enable_cthelper" = "xyes"])
+
+AS_IF([test "x$enable_systemd" = "xyes"], [
+	PKG_CHECK_MODULES([LIBSYSTEMD], [libsystemd >= 227])
+	AC_DEFINE([BUILD_SYSTEMD], [1], [Building systemd support])
+])
+AM_CONDITIONAL([HAVE_SYSTEMD], [test "x$enable_systemd" = "xyes"])
 
 AC_CHECK_HEADERS([linux/capability.h],, [AC_MSG_ERROR([Cannot find linux/capabibility.h])])
 
@@ -146,4 +140,5 @@ AC_OUTPUT
 echo "
 conntrack-tools configuration:
   userspace conntrack helper support:	${enable_cthelper}
-  conntrack timeout support:		${enable_cttimeout}"
+  conntrack timeout support:		${enable_cttimeout}
+  systemd support:			${enable_systemd}"

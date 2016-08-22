@@ -1,0 +1,87 @@
+From 82c939ea54d88f73d54f63e72eda02586c4f072c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.dk>
+Date: Mon, 1 Feb 2016 13:30:04 +0000
+Subject: [PATCH 1/4] conntrack: split up nfct_set_addr_from_opt()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Prepare for CIDR support, by splitting nfct_set_addr_from_opt()
+into nfct_parse_addr_from_opt() for parsing
+and nfct_set_addr_opt() for storing.
+
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.dk>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ src/conntrack.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
+
+diff --git a/src/conntrack.c b/src/conntrack.c
+index c30e344..8272d4c 100644
+--- a/src/conntrack.c
++++ b/src/conntrack.c
+@@ -2082,18 +2082,10 @@ static void merge_bitmasks(struct nfct_bitmask **current,
+ }
+ 
+ static void
+-nfct_set_addr_from_opt(int opt, struct nf_conntrack *ct, union ct_address *ad,
+-		       int *family)
++nfct_set_addr_opt(int opt, struct nf_conntrack *ct, union ct_address *ad,
++		  int l3protonum)
+ {
+-	int l3protonum;
+-
+ 	options |= opt2type[opt];
+-	l3protonum = parse_addr(optarg, ad);
+-	if (l3protonum == AF_UNSPEC) {
+-		exit_error(PARAMETER_PROBLEM,
+-			   "Invalid IP address `%s'", optarg);
+-	}
+-	set_family(family, l3protonum);
+ 	switch (l3protonum) {
+ 	case AF_INET:
+ 		nfct_set_attr_u32(ct,
+@@ -2109,6 +2101,21 @@ nfct_set_addr_from_opt(int opt, struct nf_conntrack *ct, union ct_address *ad,
+ 	nfct_set_attr_u8(ct, opt2attr[opt], l3protonum);
+ }
+ 
++static void
++nfct_parse_addr_from_opt(int opt, struct nf_conntrack *ct,
++                         union ct_address *ad, int *family)
++{
++	int l3protonum;
++
++	l3protonum = parse_addr(optarg, ad);
++	if (l3protonum == AF_UNSPEC) {
++		exit_error(PARAMETER_PROBLEM,
++			   "Invalid IP address `%s'", optarg);
++	}
++	set_family(family, l3protonum);
++	nfct_set_addr_opt(opt, ct, ad, l3protonum);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int c, cmd;
+@@ -2187,15 +2194,15 @@ int main(int argc, char *argv[])
+ 		case 'd':
+ 		case 'r':
+ 		case 'q':
+-			nfct_set_addr_from_opt(c, tmpl.ct, &ad, &family);
++			nfct_parse_addr_from_opt(c, tmpl.ct, &ad, &family);
+ 			break;
+ 		case '[':
+ 		case ']':
+-			nfct_set_addr_from_opt(c, tmpl.exptuple, &ad, &family);
++			nfct_parse_addr_from_opt(c, tmpl.exptuple, &ad, &family);
+ 			break;
+ 		case '{':
+ 		case '}':
+-			nfct_set_addr_from_opt(c, tmpl.mask, &ad, &family);
++			nfct_parse_addr_from_opt(c, tmpl.mask, &ad, &family);
+ 			break;
+ 		case 'p':
+ 			options |= CT_OPT_PROTO;
+-- 
+2.1.4
+

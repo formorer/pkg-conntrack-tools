@@ -20,6 +20,7 @@
 #include "conntrackd.h"
 #include "log.h"
 #include "helper.h"
+#include "systemd.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -42,12 +43,12 @@ static const char usage_daemon_commands[] =
 static const char usage_client_commands[] =
 	"Client mode commands:\n"
 	"  -c [ct|expect], commit external cache to conntrack table\n"
-	"  -f [|internal|external], flush internal and external cache\n"
+	"  -f [internal|external], flush internal and external cache\n"
 	"  -F [ct|expect], flush kernel conntrack table\n"
 	"  -i [ct|expect], display content of the internal cache\n"
 	"  -e [ct|expect], display the content of the external cache\n"
 	"  -k, kill conntrack daemon\n"
-	"  -s  [|network|cache|runtime|link|rsqueue|queue|ct|expect], "
+	"  -s  [network|cache|runtime|link|rsqueue|queue|ct|expect], "
 		"dump statistics\n"
 	"  -R [ct|expect], resync with kernel conntrack table\n"
 	"  -n, request resync with other node (only FT-FW and NOTRACK modes)\n"
@@ -403,6 +404,8 @@ int main(int argc, char *argv[])
 	do_chdir("/");
 	close(STDIN_FILENO);
 
+	sd_ct_watchdog_init();
+
 	/* Daemonize conntrackd */
 	if (type == DAEMON) {
 		pid_t pid;
@@ -410,8 +413,10 @@ int main(int argc, char *argv[])
 		if ((pid = fork()) == -1) {
 			perror("fork has failed: ");
 			exit(EXIT_FAILURE);
-		} else if (pid)
+		} else if (pid) {
+			sd_ct_mainpid(pid);
 			exit(EXIT_SUCCESS);
+		}
 
 		setsid();
 
@@ -421,6 +426,8 @@ int main(int argc, char *argv[])
 		dlog(LOG_NOTICE, "-- starting in daemon mode --");
 	} else
 		dlog(LOG_NOTICE, "-- starting in console mode --");
+
+	sd_ct_init();
 
 	/*
 	 * run main process

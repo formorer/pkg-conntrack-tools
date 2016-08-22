@@ -1,4 +1,4 @@
-.TH CONNTRACK 8 "Sep 25, 2014" "" ""
+.TH CONNTRACK 8 "Aug 24, 2015" "" ""
 
 .\" Man page written by Harald Welte <laforge@netfilter.org (Jun 2005)
 .\" Maintained by Pablo Neira Ayuso <pablo@netfilter.org (May 2007)
@@ -48,6 +48,22 @@ mechanism used to "expect" RELATED connections to existing ones.  Expectations
 are generally used by "connection tracking helpers" (sometimes called
 application level gateways [ALGs]) for more complex protocols such as FTP,
 SIP, H.323.
+.TP
+.BR "dying" :
+This table shows the conntrack entries, that have expired and that have been
+destroyed by the connection tracking system itself, or via the conntrack utility.
+.TP
+.BR "unconfirmed" :
+This table shows new entries, that are not yet inserted into the conntrack table.
+These entries are attached to packets that are traversing the stack,
+but did not reach the confirmation point at the postrouting hook.
+.PP
+The tables "dying" and "unconfirmed" are basically only useful for debugging purposes.
+Under normal operation, it is hard to see entries in any of them.
+There are corner cases, where it is valid to see entries in the
+unconfirmed table, eg. when packets that are enqueued via nfqueue, and
+the dying table, eg. when conntrackd runs in event reliable mode.
+.PP
 .SH OPTIONS
 The options recognized by 
 .B conntrack
@@ -115,11 +131,13 @@ however, this results in more memory consumption.
 This option can only be used in conjunction with "\-E, \-\-event".
 .SS FILTER PARAMETERS
 .TP
-.BI "-s, --orig-src " IP_ADDRESS
+.BI "-s, --src, --orig-src " IP_ADDRESS
 Match only entries whose source address in the original direction equals the one specified as argument.
+Implies "--mask-src" when CIDR notation is used.
 .TP
-.BI "-d, --orig-dst " IP_ADDRESS
+.BI "-d, --dst, --orig-dst " IP_ADDRESS
 Match only entries whose destination address in the original direction equals the one specified as argument.
+Implies "--mask-dst" when CIDR notation is used.
 .TP
 .BI "-r, --reply-src " IP_ADDRESS
 Match only entries whose source address in the reply direction equals the one specified as argument.
@@ -146,7 +164,7 @@ In "\-\-create" mode, the mask is ignored.
 .TP
 .BI "-l, --label " "LABEL"
 Specify a conntrack label.
-This option is only available in conjunction with "\-L, \-\-dump", "\-E, \-\-event", or "\-U \-\-update".
+This option is only available in conjunction with "\-L, \-\-dump", "\-E, \-\-event", "\-U \-\-update" or "\-D \-\-delete".
 Match entries whose labels match at least those specified.
 Use multiple \-l commands to specify multiple labels that need to be set.
 Match entries whose labels matches at least those specified as arguments.
@@ -176,17 +194,30 @@ Filter any NAT connections.
 .BI "-w, --zone "
 Filter by conntrack zone. See iptables CT target for more information.
 .TP
+.BI "--orig-zone "
+Filter by conntrack zone in original direction.
+See iptables CT target for more information.
+.TP
+.BI "--reply-zone "
+Filter by conntrack zone in reply direction.
+See iptables CT target for more information.
+.TP
 .BI "--tuple-src " IP_ADDRESS
 Specify the tuple source address of an expectation.
+Implies "--mask-src" when CIDR notation is used.
 .TP
 .BI "--tuple-dst " IP_ADDRESS
 Specify the tuple destination address of an expectation.
+Implies "--mask-dst" when CIDR notation is used.
 .TP
 .BI "--mask-src " IP_ADDRESS
-Specify the source address mask of an expectation.
+Specify the source address mask.
+For conntrack this option is only available in conjunction with "\-L, \-\-dump", "\-E, \-\-event", "\-U \-\-update" or "\-D \-\-delete".
+For expectations this option is only available in conjunction with "\-I, \-\-create".
 .TP
 .BI "--mask-dst " IP_ADDRESS
-Specify the destination address mask of an expectation.
+Specify the destination address mask.
+Same limitations as for "--mask-src".
 .SS PROTOCOL FILTER PARAMETERS
 .TP
 TCP-specific fields:
