@@ -1,5 +1,4 @@
 debian/conntrackd.conf etc/conntrackd
-debian/environmentfile usr/share/conntrackd
 debian/tmp/usr/sbin/conntrackd
 debian/tmp/usr/share/man/man5/conntrackd.conf.5
 debian/tmp/usr/share/man/man8/conntrackd.8
