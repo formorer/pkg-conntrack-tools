@@ -32,6 +32,10 @@ Copyright: (C) 2005-2012 by Pablo Neira Ayuso <pablo@netfilter.org>
 	   (C) 2012 by Intra2net AG <http://www.intra2net.com>
 License: GPL-2+
 
+Files: src/systemd.c conntrackd.conf.5
+Copyright: 2015 by Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>
+License: GPL-2+
+
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
