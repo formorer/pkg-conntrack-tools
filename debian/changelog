@@ -1,3 +1,15 @@
+conntrack-tools (1:1.4.4-2) unstable; urgency=medium
+
+  * [97f77d0] d/conntrackd.conf: refresh file and include 'Systemd on'
+    (Closes: #835384)
+  * [c4103d9] d/conntrackd.install: include conntrackd.conf(5) in the
+    package
+  * [917beed] conntrackd: get rid of the sysvinit support
+  * [ae95ea7] d/copyright: refresh file with upstream files by Arturo
+    Borrero Gonzalez
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Thu, 25 Aug 2016 11:20:27 +0200
+
 conntrack-tools (1:1.4.4-1) unstable; urgency=medium
 
   * [0f955ff] d/tests/basic-daemon-test.sh: fix if variable expansion
