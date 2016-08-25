@@ -1,17 +1,11 @@
 #!/bin/sh
+
 set -e
 
-action=$1
-version=$2
+dpkg-maintscript-helper rm_conffile \
+	/etc/init.d/conntrackd 1:1.4.4-2 conntrackd -- "$@"
 
-# package versions < 0.9.8-1 had the configuration file in a
-# non-standard location
-if [ "$action" = configure -a -n "$version" ] &&
-    dpkg --compare-versions "$version" lt "1:0.9.8-1" &&
-    test -f /etc/conntrackd.conf.dpkg-updating
-then
-    # unmodified version, delete without prompting
-    rm /etc/conntrackd.conf.dpkg-updating
-fi
+dpkg-maintscript-helper rm_conffile \
+	/etc/default/conntrackd 1:1.4.4-2 conntrackd -- "$@"
 
 #DEBHELPER#
