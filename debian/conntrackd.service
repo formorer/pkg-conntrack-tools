@@ -3,8 +3,10 @@ Description=Conntrack Daemon
 
 [Service]
 Type=notify
+EnvironmentFile=-/usr/share/conntrackd/environmentfile
+EnvironmentFile=-/etc/default/conntrackd
 #ExecStartPre=-/bin/rm -f /var/lock/conntrackd.lock
-ExecStart=/usr/sbin/conntrackd -C /etc/conntrackd/conntrackd.conf
+ExecStart=/usr/sbin/conntrackd -C "$CONFIG" $OPTIONS
 ProtectSystem=full
 ProtectHome=true
 #WatchdogSec=60

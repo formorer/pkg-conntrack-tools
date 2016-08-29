@@ -11,8 +11,3 @@ override_dh_auto_configure:
 
 override_dh_strip:
 	dh_strip --dbg-package=conntrack-tools-dbg
-
-override_dh_installinit:
-	# dh_installinit will mess with sysvinit init script
-	# in maintainer scripts, but we don't ship them
-	dh_installinit -n
