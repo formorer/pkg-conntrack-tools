@@ -1,3 +1,13 @@
+conntrack-tools (1:1.4.4-3) unstable; urgency=medium
+
+  * [4f62e32] Revert "conntrackd: get rid of the sysvinit support"
+  * [302840a] d/conntrackd.{postinst,postrm,preinst}: drop files
+  * [8de1906] d/conntrackd.README.Debian: clarify again over init systems
+  * [6967348] d/conntrackd.service: don't read sysvinit config files
+  * [cff182e] d/conntrackd.service: add Documentation= pointers to manpages
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Mon, 29 Aug 2016 09:34:49 +0200
+
 conntrack-tools (1:1.4.4-2) unstable; urgency=medium
 
   * [97f77d0] d/conntrackd.conf: refresh file and include 'Systemd on'
