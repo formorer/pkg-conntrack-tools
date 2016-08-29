@@ -1,8 +1,23 @@
-conntrackd can run in two modes:
-- statistics mode
-- synchronization mode
+conntrackd and init systems
+---------------------------
 
-This package comes with a sample configuration file for the statistics
-mode in (/etc/conntrackd/conntrackd.conf).  There are also sample
-configuration files for the synchronization mode in
-/usr/share/doc/conntrackd/examples.
+The conntrackd package comes preconfigured to use systemd [0]. You should use
+it.
+
+The sysvinit support was eventually dropped in version 1:1.4.4-1,
+but it was re-added due to popular request.
+
+To use sysvinit:
+
+ * /etc/init.d/conntrackd
+ * /etc/default/conntrackd
+
+To use systemd:
+
+You should use the systemd service file located in
+/lib/systemd/systemd/conntrackd.service. To customice it, copy that file
+to /etc/systemd/system/conntrackd.service so updates to the package
+don't destroy your changes.
+
+
+[0] http://ral-arturo.blogspot.com.es/2016/08/why-conntrackd-in-debian-is-better-with.html
