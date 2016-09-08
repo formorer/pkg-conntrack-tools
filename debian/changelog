@@ -1,3 +1,10 @@
+conntrack-tools (1:1.4.4-4) unstable; urgency=medium
+
+  * [3186488] d/conntrackd.service: include Restart=on-failure
+  * [b202c66] d/tests/systemd-service-test.sh: include 'Systemd on'
+
+ -- Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>  Thu, 08 Sep 2016 13:17:13 +0200
+
 conntrack-tools (1:1.4.4-3) unstable; urgency=medium
 
   * [4f62e32] Revert "conntrackd: get rid of the sysvinit support"
