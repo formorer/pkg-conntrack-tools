@@ -15,9 +15,10 @@ To use sysvinit:
 To use systemd:
 
 You should use the systemd service file located in
-/lib/systemd/systemd/conntrackd.service. To customice it, copy that file
+/lib/systemd/systemd/conntrackd.service. To customize it, copy that file
 to /etc/systemd/system/conntrackd.service so updates to the package
-don't destroy your changes.
+don't destroy your changes or use the native systemctl edit mechanism [1].
 
 
 [0] http://ral-arturo.blogspot.com.es/2016/08/why-conntrackd-in-debian-is-better-with.html
+[1] https://www.freedesktop.org/software/systemd/man/systemctl.html#edit%20NAME...
