@@ -71,6 +71,7 @@ General {
 	}
 
 	EventIterationLimit 10
+	Systemd on
 }" > $CONFIG_FILE
 
 #
