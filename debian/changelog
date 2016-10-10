@@ -1,3 +1,10 @@
+conntrack-tools (1:1.4.4-5) unstable; urgency=medium
+
+  * [6c493cf] d/conntrackd.README.Debian: refresh file
+  * [3c4a6b4] d/: update email address to 'arturo@debian.org'
+
+ -- Arturo Borrero Gonzalez <arturo@debian.org>  Mon, 10 Oct 2016 11:47:12 +0200
+
 conntrack-tools (1:1.4.4-4) unstable; urgency=medium
 
   * [3186488] d/conntrackd.service: include Restart=on-failure
