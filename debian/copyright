@@ -33,7 +33,7 @@ Copyright: (C) 2005-2012 by Pablo Neira Ayuso <pablo@netfilter.org>
 License: GPL-2+
 
 Files: src/systemd.c conntrackd.conf.5
-Copyright: 2015 by Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>
+Copyright: 2015 by Arturo Borrero Gonzalez <arturo@debian.org>
 License: GPL-2+
 
 License: GPL-2+
