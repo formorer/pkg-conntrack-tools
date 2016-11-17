@@ -1,3 +1,10 @@
+conntrack-tools (1:1.4.4+snapshot20161117-1) unstable; urgency=medium
+
+  * [3a4994c] New upstream version 1.4.4+snapshot20161117
+  * [810245a] d/rules: call autogen.sh with snapshot upstream tarball
+
+ -- Arturo Borrero Gonzalez <arturo@debian.org>  Thu, 17 Nov 2016 09:40:12 +0100
+
 conntrack-tools (1:1.4.4-5) unstable; urgency=medium
 
   * [6c493cf] d/conntrackd.README.Debian: refresh file
