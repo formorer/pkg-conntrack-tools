@@ -36,9 +36,12 @@
 struct ct_general_state st;
 struct ct_state state;
 
-static const char usage_daemon_commands[] =
-	"Daemon mode commands:\n"
-	"  -d [options]\t\tRun in daemon mode\n";
+static const char usage_general_commands[] =
+	"General commands:\n"
+	"  -d, run in daemon mode\n"
+	"  -C [configfile], configuration file path\n"
+	"  -v, display conntrackd version\n"
+	"  -h, display this help information\n";
 
 static const char usage_client_commands[] =
 	"Client mode commands:\n"
@@ -54,22 +57,15 @@ static const char usage_client_commands[] =
 	"  -n, request resync with other node (only FT-FW and NOTRACK modes)\n"
 	"  -B, force a bulk send to other replica firewalls\n"
 	"  -x, dump cache in XML format (requires -i or -e)\n"
-	"  -t, reset the kernel timeout (see PurgeTimeout clause)\n"
-	"  -v, display conntrackd version\n"
-	"  -h, display this help information\n";
-
-static const char usage_options[] =
-	"Options:\n"
-	"  -C [configfile], configuration file path\n";
+	"  -t, reset the kernel timeout (see PurgeTimeout clause)\n";
 
 static void
 show_usage(char *progname)
 {
 	fprintf(stdout, "Connection tracking userspace daemon v%s\n", VERSION);
 	fprintf(stdout, "Usage: %s [commands] [options]\n\n", progname);
-	fprintf(stdout, "%s\n", usage_daemon_commands);
+	fprintf(stdout, "%s\n", usage_general_commands);
 	fprintf(stdout, "%s\n", usage_client_commands);
-	fprintf(stdout, "%s\n", usage_options);
 }
 
 static void
@@ -90,7 +86,7 @@ set_operation_mode(int *current, int want, char *argv[])
 	}
 	if (*current != want) {
 		show_usage(argv[0]);
-		fprintf(stderr, "\nError: Invalid parameters\n");
+		dlog(LOG_ERR, "Invalid parameters");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -119,16 +115,16 @@ set_nice_value(int nv)
 {
 	errno = 0;
 	if (nice(nv) == -1 && errno) /* warn only */
-		fprintf(stderr, "Cannot set nice level %d: %s\n",
-			nv, strerror(errno));
+		dlog(LOG_WARNING, "Cannot set nice level %d: %s",
+		     nv, strerror(errno));
 }
 
 static void
 do_chdir(const char *d)
 {
 	if (chdir(d))
-		fprintf(stderr, "Cannot change current directory to %s: %s\n",
-			d, strerror(errno));
+		dlog(LOG_WARNING, "Cannot change current directory to %s: %s",
+		     d, strerror(errno));
 }
 
 int main(int argc, char *argv[])
@@ -141,12 +137,12 @@ int main(int argc, char *argv[])
 
 	/* Check kernel version: it must be >= 2.6.18 */
 	if (uname(&u) == -1) {
-		fprintf(stderr, "Can't retrieve kernel version via uname()\n");
+		dlog(LOG_ERR, "Can't retrieve kernel version via uname()");
 		exit(EXIT_FAILURE);
 	}
 	sscanf(u.release, "%d.%d.%d", &version, &major, &minor);
 	if (version < 2 && major < 6 && minor < 18) {
-		fprintf(stderr, "Linux kernel version must be >= 2.6.18\n");
+		dlog(LOG_ERR, "Linux kernel version must be >= 2.6.18");
 		exit(EXIT_FAILURE);
 	}
 
@@ -154,6 +150,7 @@ int main(int argc, char *argv[])
 		switch(argv[i][1]) {
 		case 'd':
 			set_operation_mode(&type, DAEMON, argv);
+			CONFIG(running_mode) = DAEMON;
 			break;
 		case 'c':
 			set_operation_mode(&type, REQUEST, argv);
@@ -180,15 +177,14 @@ int main(int argc, char *argv[])
 				strncpy(config_file, argv[i], PATH_MAX);
 				if (strlen(argv[i]) >= PATH_MAX){
 					config_file[PATH_MAX-1]='\0';
-					fprintf(stderr, "Path to config file "
-						        "to long. Cutting it "
-							"down to %d characters",
-							PATH_MAX);
+					dlog(LOG_WARNING, "Path to config file"
+					     " to long. Cutting it down to %d"
+					     " characters", PATH_MAX);
 				}
 				break;
 			}
 			show_usage(argv[0]);
-			fprintf(stderr, "Missing config filename\n");
+			dlog(LOG_ERR, "Missing config filename");
 			break;
 		case 'F':
 			set_operation_mode(&type, REQUEST, argv);
@@ -209,10 +205,8 @@ int main(int argc, char *argv[])
 					action = CT_FLUSH_EXT_CACHE;
 					i++;
 				} else {
-					fprintf(stderr, "ERROR: unknown "
-							"parameter `%s' for "
-							"option `-f'\n",
-							argv[i+1]);
+					dlog(LOG_ERR, "unknown parameter `%s' "
+					     "for option `-f'", argv[i + 1]);
 					exit(EXIT_FAILURE);
 				}
 			} else {
@@ -257,9 +251,9 @@ int main(int argc, char *argv[])
 					i++;
 				} else if (strncmp(argv[i+1], "multicast",
 						 strlen(argv[i+1])) == 0) {
-					fprintf(stderr, "WARNING: use `link' "
-						"instead of `multicast' as "
-						"parameter.\n");
+					dlog(LOG_WARNING, "use `link' "
+					     "instead of `multicast' as "
+					     "parameter.");
 					action = STATS_LINK;
 					i++;
 				} else if (strncmp(argv[i+1], "link",
@@ -287,10 +281,8 @@ int main(int argc, char *argv[])
 					action = EXP_STATS;
 					i++;
 				} else {
-					fprintf(stderr, "ERROR: unknown "
-							"parameter `%s' for "
-							"option `-s'\n",
-							argv[i+1]);
+					dlog(LOG_ERR, "unknown parameter `%s' "
+					     "for option `-s'", argv[i + 1]);
 					exit(EXIT_FAILURE);
 				}
 			} else {
@@ -299,8 +291,7 @@ int main(int argc, char *argv[])
 			}
 			break;
 		case 'S':
-			fprintf(stderr, "WARNING: -S option is obsolete. "
-					"Ignoring.\n");
+			dlog(LOG_WARNING,"-S option is obsolete. Ignoring.");
 			break;
 		case 'n':
 			set_operation_mode(&type, REQUEST, argv);
@@ -317,7 +308,7 @@ int main(int argc, char *argv[])
 				action = EXP_DUMP_EXT_XML;
 			else {
 				show_usage(argv[0]);
-				fprintf(stderr, "Error: Invalid parameters\n");
+				dlog(LOG_ERR,  "Invalid parameters");
 				exit(EXIT_FAILURE);
 
 			}
@@ -330,7 +321,7 @@ int main(int argc, char *argv[])
 			exit(EXIT_SUCCESS);
 		default:
 			show_usage(argv[0]);
-			fprintf(stderr, "Unknown option: %s\n", argv[i]);
+			dlog(LOG_ERR, "Unknown option: %s", argv[i]);
 			return 0;
 			break;
 		}
@@ -342,14 +333,14 @@ int main(int argc, char *argv[])
 	umask(0177);
 
 	if ((ret = init_config(config_file)) == -1) {
-		fprintf(stderr, "can't open config file `%s'\n", config_file);
+		dlog(LOG_ERR, "can't open config file `%s'", config_file);
 		exit(EXIT_FAILURE);
 	}
 
 	if (type == REQUEST) {
 		if (do_local_request(action, &conf.local, local_step) == -1) {
-			fprintf(stderr, "can't connect: is conntrackd "
-					"running? appropriate permissions?\n");
+			dlog(LOG_ERR, "can't connect: is conntrackd "
+			     "running? appropriate permissions?");
 			exit(EXIT_FAILURE);
 		}
 		exit(EXIT_SUCCESS);
@@ -366,8 +357,8 @@ int main(int argc, char *argv[])
 	 */
 	ret = open(CONFIG(lockfile), O_CREAT | O_EXCL | O_TRUNC, 0600);
 	if (ret == -1) {
-		fprintf(stderr, "lockfile `%s' exists, perhaps conntrackd "
-			        "already running?\n", CONFIG(lockfile));
+		dlog(LOG_ERR, "lockfile `%s' exists, perhaps conntrackd"
+		     " already running?", CONFIG(lockfile));
 		exit(EXIT_FAILURE);
 	}
 	close(ret);
@@ -384,7 +375,8 @@ int main(int argc, char *argv[])
 
 		ret = sched_setscheduler(0, CONFIG(sched).type, &schedparam);
 		if (ret == -1) {
-			perror("sched");
+			dlog(LOG_ERR, "scheduler configuration failed: %s",
+			     strerror(errno));
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -394,9 +386,9 @@ int main(int argc, char *argv[])
 	 */
 
 	if (init() == -1) {
+		dlog(LOG_ERR, "conntrackd cannot start, please review your "
+		     "configuration");
 		close_log();
-		fprintf(stderr, "ERROR: conntrackd cannot start, please "
-				"check the logfile for more info\n");
 		unlink(CONFIG(lockfile));
 		exit(EXIT_FAILURE);
 	}
@@ -411,7 +403,7 @@ int main(int argc, char *argv[])
 		pid_t pid;
 
 		if ((pid = fork()) == -1) {
-			perror("fork has failed: ");
+			dlog(LOG_ERR, "fork has failed: %s", strerror(errno));
 			exit(EXIT_FAILURE);
 		} else if (pid) {
 			sd_ct_mainpid(pid);

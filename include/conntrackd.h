@@ -110,6 +110,7 @@ struct ct_conf {
 	int filter_from_kernelspace;
 	int event_iterations_limit;
 	int systemd;
+	int running_mode;
 	struct {
 		int error_queue_length;
 	} channelc;
@@ -146,6 +147,7 @@ struct ct_general_state {
 	sigset_t 			block;
 	FILE 				*log;
 	FILE				*stats_log;
+	int				log_init;
 	struct local_server		local;
 	struct ct_mode 			*mode;
 	struct ct_filter		*us_filter;

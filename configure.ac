@@ -118,6 +118,9 @@ dnl AC_CHECK_HEADERS([netinet/in.h stdlib.h])
 dnl AC_C_CONST
 dnl AC_C_INLINE
 
+# Let nfct use dlopen() on helper libraries without resolving all symbols.
+AX_CHECK_LINK_FLAG([-Wl,-z,lazy], [AC_SUBST([LAZY_LDFLAGS], [-Wl,-z,lazy])])
+
 # Checks for library functions.
 dnl AC_FUNC_MALLOC
 dnl AC_FUNC_VPRINTF

@@ -21,6 +21,7 @@
 
 #include <string.h>
 
+#include "conntrackd.h"
 #include "read_config_yy.h"
 %}
 
@@ -158,14 +159,14 @@ notrack		[N|n][O|o][T|t][R|r][A|a][C|c][K|k]
 {ip6}			{ yylval.string = strdup(yytext); return T_IP; }
 {path}			{ yylval.string = strdup(yytext); return T_PATH_VAL; }
 {alarm}			{ return T_ALARM; }
-{persistent}		{ fprintf(stderr, "\nWARNING: Now `persistent' mode "
-				  "is called `alarm'. Please, update "
-				  "your conntrackd.conf file.\n");
+{persistent}		{ dlog(LOG_WARNING, "Now `persistent' mode "
+			       "is called `alarm'. Please, update "
+				"your conntrackd.conf file.");
 			  return T_ALARM; }
 {ftfw}			{ return T_FTFW; }
-{nack}			{ fprintf(stderr, "\nWARNING: Now `nack' mode "
-				  "is called `ftfw'. Please, update "
-				  "your conntrackd.conf file.\n");
+{nack}			{ dlog(LOG_WARNING, "Now `nack' mode "
+			       "is called `ftfw'. Please, update "
+			       "your conntrackd.conf file.\n");
 			  return T_FTFW; }
 {notrack}		{ return T_NOTRACK; }
 {string}		{ yylval.string = strdup(yytext); return T_STRING; }

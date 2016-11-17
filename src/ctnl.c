@@ -404,8 +404,8 @@ int ctnl_init(void)
 	else if (CONFIG(flags) & CTD_SYNC_MODE)
 		STATE(mode) = &sync_mode;
 	else {
-		fprintf(stderr, "WARNING: No running mode specified. "
-				"Defaulting to statistics mode.\n");
+		dlog(LOG_WARNING, "No running mode specified. "
+		     "Defaulting to statistics mode.");
 		CONFIG(flags) |= CTD_STATS_MODE;
 		STATE(mode) = &stats_mode;
 	}

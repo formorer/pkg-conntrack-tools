@@ -138,7 +138,7 @@ static struct ct_filter *__filter_alloc(struct ct_filter *filter)
 	if (!STATE(us_filter)) {
 		STATE(us_filter) = ct_filter_create();
 		if (!STATE(us_filter)) {
-			fprintf(stderr, "Can't create ignore pool!\n");
+			dlog(LOG_ERR, "Can't create ignore pool!");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -479,7 +479,7 @@ static struct exp_filter *exp_filter_alloc(void)
 	if (STATE(exp_filter) == NULL) {
 		STATE(exp_filter) = exp_filter_create();
 		if (STATE(exp_filter) == NULL) {
-			fprintf(stderr, "Can't init expectation filtering!\n");
+			dlog(LOG_ERR, "Can't init expectation filtering!");
 			return NULL;
 		}
 	}
