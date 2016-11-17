@@ -1185,4 +1185,55 @@ not enough space errors:                   0
 
 </chapter>
 
+  <chapter id="system-integration"><title>System integration</title>
+
+  <para>
+	You may want to integrate conntrackd into your system in order to build
+	a robust firewall cluster. You should take a look at how the linux
+	distro of your choice does this, as there are some interesting things
+	to take into account.
+  </para>
+
+  <para>
+	Depending on the architecture of the firewall cluster, you may want to
+	sync each node after a fallback operation, so the new node
+	inmediately knows the connection of the other. This is specially
+	interesting in <emphasis>Active-Active</emphasis> mode.
+  </para>
+
+  <para>
+	This can be done using <emphasis>conntrackd -n</emphasis> just after
+	the new node has joined the conntrackd cluster, for example at boot
+	time. These operations require the main conntrackd daemon to open the
+	UNIX socket to receive the order from the
+	<emphasis>conntrackd -n</emphasis> call.
+  </para>
+
+  <para>
+	Care must be taken that no race conditions happens (i.e, the UNIX
+	socket is actually opened before <emphasis>conntrackd -n</emphasis> is
+	launched). Otherwise, you may end with a new node (after fallback)
+	which doesn't know any connection states from the other node.
+  </para>
+
+  <para>
+	Since <emphasis>conntrack-tools 1.4.4</emphasis>, the conntrackd
+	daemon includes integration with <emphasis>libsystemd</emphasis>. If
+	conntrackd is configured at build time with this support
+	(using <emphasis>--enable-systemd</emphasis>), then you can
+	use <emphasis>Systemd on</emphasis> in the
+	<emphasis>conntrackd.conf</emphasis> main configuration file.
+	To benefit from this integration, you should use a systemd service file
+	of <emphasis>Type=notify</emphasis>, which also includes support for
+	the systemd watchdog.
+  </para>
+
+  <para>
+	Using systemd and conntrackd with libsystemd support and a service file
+	of Type=notify means that conntrackd will notify of its readiness to
+	systemd, so you can launch <emphasis>conntrackd -n</emphasis> safely,
+	avoiding such race conditions.
+  </para>
+
+  </chapter>
 </book>

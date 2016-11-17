@@ -1,5 +1,5 @@
 /*
- * (C) 2015 by Arturo Borrero Gonzalez <arturo.borrero.glez@gmail.com>
+ * (C) 2015 by Arturo Borrero Gonzalez <arturo@debian.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,8 +42,8 @@ void sd_ct_watchdog_init(void)
 
 	ret = sd_watchdog_enabled(0, &sd_watchdog_interval);
 	if (ret < 0) {
-		fprintf(stderr, "WARNING: failed to get watchdog details from"
-				" systemd: %s\n", strerror(-ret));
+		dlog(LOG_WARNING, "failed to get watchdog details from "
+		     "systemd: %s", strerror(-ret));
 		return;
 	} else if (ret == 0) {
 		/* no watchdog required */

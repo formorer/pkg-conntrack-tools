@@ -293,6 +293,9 @@ static int ftp_find_pattern(struct pkt_buff *pkt,
 	if (!numlen)
 		return 0;
 
+	*matchoff = i;
+	*matchlen = numlen;
+
 	pr_debug("Match succeded!\n");
 	return 1;
 }
@@ -508,7 +511,7 @@ ftp_helper_cb(struct pkt_buff *pkt, uint32_t protoff,
 		goto out_update_nl;
 
 	pr_debug("conntrack_ftp: match `%.*s' (%u bytes at %u)\n",
-		 matchlen, pktb_network_header(pkt) + matchoff,
+		 matchlen, pktb_network_header(pkt) + dataoff + matchoff,
 		 matchlen, ntohl(th->seq) + matchoff);
 
 	/* We refer to the reverse direction ("!dir") tuples here,
