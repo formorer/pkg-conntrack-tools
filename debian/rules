@@ -7,6 +7,7 @@
 	dh $@ --with systemd,autotools-dev
 
 override_dh_auto_configure:
+	./autogen.sh
 	./configure --prefix=/usr --disable-silent-rules --enable-systemd
 
 override_dh_strip:
