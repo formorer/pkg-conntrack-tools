@@ -21,3 +21,7 @@ Restrictions: needs-root, isolation-container, allow-stderr
 Tests: conntrack-test.sh
 Depends: @
 Restrictions: needs-root, isolation-container, allow-stderr
+
+Tests: conntrack-internal-testsuite.sh
+Depends: @, @builddeps@
+Restrictions: needs-root, isolation-container, build-needed
