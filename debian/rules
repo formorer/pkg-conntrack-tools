@@ -11,4 +11,4 @@ override_dh_auto_configure:
 	./configure --prefix=/usr --disable-silent-rules --enable-systemd
 
 override_dh_strip:
-	dh_strip --dbg-package=conntrack-tools-dbg
+	dh_strip --dbgsym-migration='conntrack-tools-dbg (<< 1:1.4.4+snapshot20161117-1)'
