@@ -1,3 +1,12 @@
+conntrack-tools (1:1.4.4+snapshot20161117-2) unstable; urgency=medium
+
+  * [bbece6e] conntrack-tools-dbg: switch to -dbgsym
+  * [e6f2e28] d/tests/: run the conntrack internal testsuite
+  * [b283277] d/tests/: run nfct internal testsuite
+  * [5767931] d/compat: switch from compat 9 to 10
+
+ -- Arturo Borrero Gonzalez <arturo@debian.org>  Fri, 02 Dec 2016 09:35:00 +0100
+
 conntrack-tools (1:1.4.4+snapshot20161117-1) unstable; urgency=medium
 
   * [3a4994c] New upstream version 1.4.4+snapshot20161117
