@@ -1,3 +1,11 @@
+conntrack-tools (1:1.4.4+snapshot20161117-3) unstable; urgency=medium
+
+  * [841f76b] d/tests/: fixes for ci.debian.net
+  * [5ba7b9e] d/patches/: add missing-include.patch
+  * [b557f0d] d/control: put myself as Maintainer
+
+ -- Arturo Borrero Gonzalez <arturo@debian.org>  Mon, 05 Dec 2016 12:01:15 +0100
+
 conntrack-tools (1:1.4.4+snapshot20161117-2) unstable; urgency=medium
 
   * [bbece6e] conntrack-tools-dbg: switch to -dbgsym
