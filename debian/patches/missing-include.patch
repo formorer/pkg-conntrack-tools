@@ -1,0 +1,26 @@
+From: Arturo Borrero Gonzalez <arturo@debian.org>
+Date: Fri, 2 Dec 2016 11:29:38 +0100
+Subject: systemd: fix missing log.h include
+
+Produces this:
+ warning: implicit declaration of function 'dlog'
+
+Signed-off-by: Arturo Borrero Gonzalez <arturo@debian.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ src/systemd.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/systemd.c b/src/systemd.c
+index c6253cc..64bfc66 100644
+--- a/src/systemd.c
++++ b/src/systemd.c
+@@ -19,6 +19,7 @@
+ #include "systemd.h"
+ #include "conntrackd.h"
+ #include "alarm.h"
++#include "log.h"
+ #include <systemd/sd-daemon.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+--
