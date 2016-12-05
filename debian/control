@@ -1,8 +1,8 @@
 Source: conntrack-tools
 Section: net
 Priority: extra
-Maintainer: Alexander Wirt <formorer@debian.org>
-Uploaders: Arturo Borrero Gonzalez <arturo@debian.org>
+Maintainer: Arturo Borrero Gonzalez <arturo@debian.org>
+Uploaders: Alexander Wirt <formorer@debian.org>
 Homepage: http://conntrack-tools.netfilter.org/
 Build-Depends: autotools-dev,
                bison,
