@@ -5,5 +5,5 @@
 set -e
 
 cd tests/nfct
-sh -e ./run-test.sh
+bash -e ./run-test.sh
 exit $?

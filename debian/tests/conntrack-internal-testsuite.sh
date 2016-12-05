@@ -5,5 +5,5 @@
 set -e
 
 cd tests/conntrack
-sh -e ./run-test.sh
+bash -e ./run-test.sh
 exit $?
