@@ -24,8 +24,8 @@ Restrictions: needs-root, isolation-container, allow-stderr
 
 Tests: conntrack-internal-testsuite.sh
 Depends: @, @builddeps@, kmod
-Restrictions: needs-root, isolation-container, build-needed
+Restrictions: needs-root, isolation-machine, build-needed
 
 Tests: nfct-internal-testsuite.sh
 Depends: @, @builddeps@, kmod
-Restrictions: needs-root, isolation-container, build-needed
+Restrictions: needs-root, isolation-machine, build-needed
