@@ -1,3 +1,10 @@
+conntrack-tools (1:1.4.4+snapshot20161117-4) unstable; urgency=medium
+
+  * [6add2e0] d/rules: disable parallel building
+  * [7dab55c] d/tests/: only run internal testsuites in newer kernels
+
+ -- Arturo Borrero Gonzalez <arturo@debian.org>  Wed, 07 Dec 2016 09:41:51 +0100
+
 conntrack-tools (1:1.4.4+snapshot20161117-3) unstable; urgency=medium
 
   * [841f76b] d/tests/: fixes for ci.debian.net
