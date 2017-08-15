@@ -55,20 +55,12 @@ Sync {
 		Port 3780
 		Interface lo
 		Checksum on
-		SndSocketBuffer 12492800
-		RcvSocketBuffer 12492800
 	}
 	Options {
 		ExpectationSync On
 	}
 }
 General {
-	Nice -20
-	Scheduler {
-		Type FIFO
-		Priority 99
-	}
-
 	Syslog on
 	LockFile $LOCKFILE
 	UNIX {

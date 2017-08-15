@@ -26,6 +26,18 @@ systemctl_action()
 	return 0
 }
 
+get_ethernet_device()
+{
+	for dev in /sys/class/net/*; do
+		if [ $(cat "$dev/type") = 1 ]; then
+			echo $(basename "$dev")
+			break
+		fi
+	done
+}
+
+ETHER=$(get_ethernet_device)
+
 echo "
 Sync {
 	Mode NOTRACK {
@@ -37,22 +49,14 @@ Sync {
 		IPv4_address 127.0.0.1
 		IPv4_Destination_Address 127.0.0.1
 		Port 3780
-		Interface eth0
+		Interface $ETHER
 		Checksum on
-		SndSocketBuffer 12492800
-		RcvSocketBuffer 12492800
 	}
 	Options {
 		ExpectationSync On
 	}
 }
 General {
-	Nice -20
-	Scheduler {
-		Type FIFO
-		Priority 99
-	}
-
 	Syslog on
 	LockFile /var/lock/conntrackd.lock
 	UNIX {
